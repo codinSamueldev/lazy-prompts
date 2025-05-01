@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'feed',
     'users',
+    'prompt_posts',
+    'likes',
+    'search',
 ]
 
 MIDDLEWARE = [
