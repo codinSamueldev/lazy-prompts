@@ -308,3 +308,104 @@ textarea,
     font-family: var(--font-secondary);
     font-size: var(--text-sm);
 }
+
+/* Footer Styles */
+.footer {
+    background-color: var(--color-light);
+    padding: 4rem 0 2rem;
+    margin-top: auto;
+}
+
+.footer-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.footer-content {
+    margin-bottom: 3rem;
+}
+
+.footer-brand {
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.footer-title {
+    font-family: var(--font-primary);
+    color: var(--color-primary);
+    font-size: var(--text-2xl);
+    margin-bottom: 1.5rem;
+}
+
+.footer-description {
+    color: var(--color-primary);
+    line-height: 1.6;
+    opacity: 0.9;
+    font-size: var(--text-lg);
+    margin-bottom: 2rem;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(0, 106, 113, 0.1);
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.footer-social {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.github-link {
+    color: var(--color-primary);
+    transition: color var(--transition-speed), transform var(--transition-speed);
+    display: inline-flex;
+    padding: 0.5rem;
+}
+
+.github-link:hover {
+    color: var(--color-secondary);
+    transform: translateY(-2px);
+}
+
+.github-icon {
+    width: 28px;
+    height: 28px;
+}
+
+.copyright {
+    color: var(--color-primary);
+    opacity: 0.8;
+    font-size: var(--text-sm);
+}
+
+/* Responsive Footer */
+@media (max-width: 768px) {
+    .footer {
+        padding: 3rem 0 1.5rem;
+    }
+
+    .footer-container {
+        padding: 0 1.5rem;
+    }
+
+    .footer-description {
+        font-size: var(--text-base);
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-container {
+        padding: 0 1rem;
+    }
+
+    .footer-title {
+        font-size: var(--text-xl);
+    }
+}
