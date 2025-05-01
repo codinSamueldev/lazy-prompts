@@ -1,7 +1,46 @@
-<header>
-    <nav>
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
-        </ul>
-    </nav>
+{% load static %}
+<!-- Navbar -->
+<header class="navbar">
+    <div class="navbar-container">
+        <!-- Left section with search -->
+        <div class="navbar-search">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search prompts..." name="search">
+                <button class="search-filter-btn" aria-label="Search filters">
+                    <svg class="filter-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M3 6h18M7 12h10M11 18h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <div class="search-suggestions" hidden>
+                    <!-- Suggestions will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="active-filters" hidden>
+                <!-- Active filter chips will be added here -->
+            </div>
+        </div>
+
+        <!-- Center section with logo -->
+        <div class="navbar-logo">
+            <a href="{% url 'home' %}" class="logo-link">
+                <!-- Logo placeholder - replace src with actual logo path once created -->
+                <img src="{% static 'assets/logo-placeholder.png' %}" alt="Lazy Prompts" class="logo-image">
+            </a>
+        </div>
+
+        <!-- Right section with navigation -->
+        <nav class="navbar-nav">
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <ul class="nav-list">
+                <li><a href="#" class="nav-link">Topics</a></li>
+                <li><a href="#" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link">Login</a></li>
+                <li><a href="#" class="nav-link register-btn">Register</a></li>
+            </ul>
+        </nav>
+    </div>
 </header>

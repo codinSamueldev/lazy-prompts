@@ -4,10 +4,307 @@
     box-sizing: border-box;
 }
 
+:root {
+    --color-primary: #006A71;
+    --color-secondary: #48A6A7;
+    --color-tertiary: #9ACBD0;
+    --color-light: #F2EFE7;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+    --font-primary: 'Recoleta', serif;
+    --font-secondary: 'Arial', sans-serif;
+    
+    /* Typography Scale */
+    --text-xs: 0.75rem;    /* 12px */
+    --text-sm: 0.875rem;   /* 14px */
+    --text-base: 1rem;     /* 16px */
+    --text-lg: 1.125rem;   /* 18px */
+    --text-xl: 1.25rem;    /* 20px */
+    --text-2xl: 1.5rem;    /* 24px */
+    --text-3xl: 1.875rem;  /* 30px */
+    --text-4xl: 2.25rem;   /* 36px */
+}
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: var(--font-secondary);
     line-height: 1.6;
-    color: #333;
-    background-color: #f4f4f4;
+    color: var(--color-primary);
+    background-color: var(--color-light);
+    font-size: var(--text-base);
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: white;
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Search section */
+.navbar-search {
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    border: 2px solid var(--color-tertiary);
+    border-radius: 25px;
+    font-size: 0.9rem;
+    transition: border-color var(--transition-speed);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+}
+
+.search-filter-btn {
+    position: absolute;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--color-secondary);
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    margin-top: 0.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Logo section */
+.navbar-logo {
+    flex: 0 0 auto;
+}
+
+.logo-link {
+    display: block;
+}
+
+.logo-image {
+    height: 50px;
+    width: auto;
+}
+
+/* Navigation section */
+.navbar-nav {
+    flex: 1;
+    max-width: 400px;
+}
+
+.nav-list {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.nav-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-speed);
+}
+
+.nav-link:hover {
+    color: var(--color-secondary);
+}
+
+.register-btn {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    transition: background-color var(--transition-speed);
+}
+
+.register-btn:hover {
+    background-color: var(--color-secondary);
+    color: white;
+}
+
+/* Mobile menu button */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.hamburger-line {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--color-primary);
+    margin: 5px 0;
+    transition: transform var(--transition-speed), opacity var(--transition-speed);
+}
+
+/* Filter chips */
+.filter-chip {
+    background-color: var(--color-tertiary);
+    color: var(--color-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-chip button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+    .navbar-container {
+        padding: 0.75rem;
+    }
+
+    .navbar-search {
+        max-width: none;
+    }
+
+    .logo-image {
+        height: 40px;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .nav-list {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 250px;
+        background-color: white;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 2rem 1rem;
+        transition: right var(--transition-speed);
+        box-shadow: var(--shadow-md);
+    }
+
+    .nav-list.active {
+        right: 0;
+    }
+
+    /* Hamburger animation */
+    .mobile-menu-btn.active .hamburger-line:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .mobile-menu-btn.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-menu-btn.active .hamburger-line:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+}
+
+/* Recoleta Usage for Display Elements */
+h1, h2, h3, h4, h5, h6,
+.navbar-logo,
+.nav-link,
+.section-title,
+.card-title,
+.hero-text,
+.feature-title,
+.prompt-title {
+    font-family: var(--font-primary);
+    line-height: 1.2;
+}
+
+/* Heading Sizes */
+h1, .h1 { font-size: var(--text-4xl); font-weight: 700; }
+h2, .h2 { font-size: var(--text-3xl); font-weight: 700; }
+h3, .h3 { font-size: var(--text-2xl); font-weight: 500; }
+h4, .h4 { font-size: var(--text-xl); font-weight: 500; }
+h5, .h5 { font-size: var(--text-lg); font-weight: 500; }
+h6, .h6 { font-size: var(--text-base); font-weight: 500; }
+
+/* Body Text - Keep Secondary Font */
+p, 
+.body-text,
+.description,
+.prompt-content,
+.comment-text {
+    font-family: var(--font-secondary);
+    font-size: var(--text-base);
+    line-height: 1.6;
+}
+
+/* Interactive Elements */
+button,
+input,
+select,
+textarea,
+.search-input::placeholder {
+    font-family: var(--font-secondary);
+}
+
+/* Special Elements that could use Recoleta */
+.cta-text,
+.testimonial-quote,
+.stat-number,
+.pricing-amount {
+    font-family: var(--font-primary);
+}
+
+/* Small Text - Keep Secondary Font */
+.caption,
+.meta-text,
+.footnote,
+.copyright {
+    font-family: var(--font-secondary);
+    font-size: var(--text-sm);
 }
