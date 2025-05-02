@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const navMenu = document.querySelector('.nav-menu');
     const body = document.body;
     let isMenuOpen = false;
+    let touchStartX = 0;
+    let touchEndX = 0;
 
     // Create overlay element
     const overlay = document.createElement('div');
@@ -12,19 +14,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function openMenu() {
         isMenuOpen = true;
-        mobileMenuBtn.classList.add('active');
-        navMenu.classList.add('active');
-        overlay.classList.add('active');
-        body.style.overflow = 'hidden';
+        requestAnimationFrame(() => {
+            mobileMenuBtn.classList.add('active');
+            navMenu.classList.add('active');
+            overlay.classList.add('active');
+            body.style.overflow = 'hidden';
+        });
     }
 
     function closeMenu() {
         if (!isMenuOpen) return;
         isMenuOpen = false;
-        mobileMenuBtn.classList.remove('active');
-        navMenu.classList.remove('active');
-        overlay.classList.remove('active');
-        body.style.overflow = '';
+        requestAnimationFrame(() => {
+            mobileMenuBtn.classList.remove('active');
+            navMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            body.style.overflow = '';
+        });
     }
 
     // Toggle menu on button click
@@ -38,10 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Close menu when clicking overlay
-    overlay.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeMenu();
-    });
+    overlay.addEventListener('click', closeMenu);
 
     // Handle clicks on the document
     document.addEventListener('click', (e) => {
@@ -58,18 +61,53 @@ document.addEventListener('DOMContentLoaded', function() {
     // Close menu when clicking a link
     const menuLinks = navMenu.querySelectorAll('a');
     menuLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeMenu();
-        });
+        link.addEventListener('click', closeMenu);
     });
 
-    // Close menu on escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isMenuOpen) {
+    // Swipe to close functionality
+    navMenu.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+    });
+
+    navMenu.addEventListener('touchmove', (e) => {
+        if (!isMenuOpen) return;
+        touchEndX = e.touches[0].clientX;
+        const swipeDistance = touchEndX - touchStartX;
+        
+        if (swipeDistance > 0) {
+            e.preventDefault();
+            navMenu.style.transform = `translateX(${swipeDistance}px)`;
+        }
+    });
+
+    navMenu.addEventListener('touchend', () => {
+        const swipeDistance = touchEndX - touchStartX;
+        navMenu.style.transform = '';
+        
+        if (swipeDistance > 100) {
             closeMenu();
         }
     });
+
+    // Load More functionality
+    const loadMoreBtn = document.querySelector('.load-more-btn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', async function() {
+            this.classList.add('loading');
+            
+            try {
+                // Simulate loading (replace with actual API call)
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Add new content here
+                
+            } catch (error) {
+                console.error('Error loading more content:', error);
+            } finally {
+                this.classList.remove('loading');
+            }
+        });
+    }
 
     // Search functionality
     const searchInput = document.querySelector('.search-input');
