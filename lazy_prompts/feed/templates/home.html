@@ -9,8 +9,8 @@
 
 {% block content %}
 <div class="home-container">
-    <!-- Left Sidebar - Hot Prompts -->
-    <aside class="hot-prompts-sidebar">
+    <!-- Left Sidebar - Hot Prompts (Desktop) -->
+    <aside class="hot-prompts-sidebar desktop-hot-prompts">
         <div class="section-header">
             <h2>Hot Prompts</h2>
         </div>
@@ -86,6 +86,25 @@
         <div class="load-more-container">
             <button class="load-more-btn">Load More</button>
         </div>
+
+        <!-- Hot Prompts Section (Mobile) -->
+        <section class="mobile-hot-prompts">
+            <div class="section-header">
+                <h2>Hot Prompts</h2>
+            </div>
+            <div class="hot-prompts-list">
+                <!-- Placeholder for hot prompts -->
+                {% for i in "12345"|make_list %}
+                <div class="hot-prompt-card">
+                    <h3 class="hot-prompt-title">Example Hot Prompt Title</h3>
+                    <div class="hot-prompt-meta">
+                        <span class="likes-count">1.2k likes</span>
+                        <span class="topic-tag">Coding</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
     </main>
 
     <!-- Right Sidebar - Topics -->

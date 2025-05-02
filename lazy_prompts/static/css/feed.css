@@ -285,10 +285,57 @@
     color: white;
 }
 
+/* Hot Prompts Section */
+.desktop-hot-prompts {
+    display: block;
+}
+
+.mobile-hot-prompts {
+    display: none;
+    background: var(--surface-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.mobile-hot-prompts .section-header {
+    margin-bottom: 1.5rem;
+}
+
+.mobile-hot-prompts .hot-prompts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Load More Button States */
+.load-more-btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.load-more-btn.loading::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--surface-color);
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .home-container {
         grid-template-columns: 300px 1fr;
+        gap: 1.5rem;
     }
     
     .topics-sidebar {
@@ -299,23 +346,53 @@
 @media (max-width: 640px) {
     .home-container {
         grid-template-columns: 1fr;
-        padding: 1rem;
+        padding: 0.75rem;
         gap: 1rem;
     }
     
-    .hot-prompts-sidebar {
+    .desktop-hot-prompts {
         display: none;
+    }
+    
+    .mobile-hot-prompts {
+        display: block;
     }
     
     .prompt-card {
         padding: 1rem;
+        margin-bottom: 0.75rem;
     }
     
     .sort-options {
-        justify-content: center;
+        justify-content: space-between;
+        padding: 0 0.5rem;
+    }
+    
+    .sort-btn {
+        flex: 1;
+        text-align: center;
+        font-size: 0.875rem;
     }
     
     .prompt-meta {
         flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+    
+    .feed-controls {
+        margin: -0.75rem -0.75rem 0;
+        border-radius: 0;
+        position: sticky;
+        top: var(--navbar-height);
+    }
+    
+    .load-more-container {
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .load-more-btn {
+        width: 100%;
+        max-width: 300px;
     }
 } 
