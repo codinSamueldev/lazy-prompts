@@ -4,6 +4,23 @@
 
 {% block content %}
     <h2>Registration</h2>
+    {# Error summary at the top #}
+    {% if form.errors %}
+        <div class="form-errors" role="alert" aria-live="assertive">
+            <ul>
+                {# Non-field errors #}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                {# Field-specific errors #}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

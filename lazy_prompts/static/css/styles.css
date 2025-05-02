@@ -519,3 +519,24 @@ textarea,
         font-size: var(--text-xl);
     }
 }
+
+/* Error summary styling for forms */
+.form-errors {
+    border: 2px solid #d32f2f;
+    background-color: #fffdfd;
+    color: #b71c1c;
+    padding: 1em 1.5em;
+    margin-bottom: 1.5em;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 1.1em;
+    box-shadow: 0 2px 4px rgba(211, 47, 47, 0.05);
+}
+.form-errors ul {
+    margin: 0;
+    padding-left: 1.2em;
+}
+.form-errors li {
+    margin-bottom: 0.3em;
+    list-style: disc inside;
+}
