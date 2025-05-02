@@ -1,8 +1,107 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
 
-{% block title %} Home {% endblock %}
+{% block title %}Home{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/feed.css' %}">
+{% endblock %}
 
 {% block content %}
-    <h1>Lazy Prompts</h1>
-    <p>Welcome bud! glad you are here.</p>
+<div class="home-container">
+    <!-- Left Sidebar - Hot Prompts -->
+    <aside class="hot-prompts-sidebar">
+        <div class="section-header">
+            <h2>Hot Prompts</h2>
+        </div>
+        <div class="hot-prompts-list">
+            <!-- Placeholder for hot prompts -->
+            {% for i in "12345"|make_list %}
+            <div class="hot-prompt-card">
+                <h3 class="hot-prompt-title">Example Hot Prompt Title</h3>
+                <div class="hot-prompt-meta">
+                    <span class="likes-count">1.2k likes</span>
+                    <span class="topic-tag">Coding</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </aside>
+
+    <!-- Main Feed -->
+    <main class="main-feed">
+        <!-- Feed Controls -->
+        <div class="feed-controls">
+            <div class="sort-options">
+                <button class="sort-btn active">New</button>
+                <button class="sort-btn">Hot</button>
+                <button class="sort-btn">Top</button>
+            </div>
+        </div>
+
+        <!-- Feed Content -->
+        <div class="feed-content">
+            <!-- Placeholder for feed items -->
+            {% for i in "123"|make_list %}
+            <article class="prompt-card">
+                <div class="prompt-card-header">
+                    <div class="prompt-meta">
+                        <a href="#" class="author-link">@username</a>
+                        <span class="post-date">2 hours ago</span>
+                        <span class="topic-tag">Coding</span>
+                    </div>
+                    <h2 class="prompt-title">Example Prompt Title</h2>
+                </div>
+                
+                <div class="prompt-content">
+                    <p class="prompt-excerpt">This is a brief preview of the prompt content...</p>
+                    {% if True %}
+                    <div class="prompt-image">
+                        <img src="{% static 'assets/placeholder.jpg' %}" alt="Prompt image">
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="prompt-card-footer">
+                    <div class="prompt-stats">
+                        <span class="likes-count">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                            1.2k
+                        </span>
+                        <span class="saves-count">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+                            </svg>
+                            234
+                        </span>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <!-- Load More Button -->
+        <div class="load-more-container">
+            <button class="load-more-btn">Load More</button>
+        </div>
+    </main>
+
+    <!-- Right Sidebar - Topics -->
+    <aside class="topics-sidebar">
+        <div class="section-header">
+            <h2>Topics</h2>
+        </div>
+        <div class="topics-list">
+            <!-- Placeholder for topics -->
+            {% for topic in "12345"|make_list %}
+            <a href="#" class="topic-card">
+                <span class="topic-name">Example Topic</span>
+                <span class="topic-count">1.2k prompts</span>
+            </a>
+            {% endfor %}
+        </div>
+    </aside>
+</div>
 {% endblock %}

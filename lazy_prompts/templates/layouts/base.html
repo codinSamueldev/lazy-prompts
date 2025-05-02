@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lazy Prompts |{% block title %}{% endblock %}</title>
+    <title>{% block title %}Lazy Prompts{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     {% include 'layouts/partials/navbar.html' %}
@@ -19,5 +20,6 @@
     
     <!-- JavaScript -->
     <script src="{% static 'js/navbar.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
