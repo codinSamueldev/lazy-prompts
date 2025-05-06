@@ -1,0 +1,15 @@
+[project]
+name = "lazy-prompts-local"
+version = "0.1.0"
+description = "A community social media where people can share or copy-paste prompts."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "asgiref==3.8.1",
+    "dj-database-url==2.3.0",
+    "django==5.2",
+    "psycopg2-binary==2.9.10",
+    "python-dotenv==1.1.0",
+    "sqlparse==0.5.3",
+    "typing-extensions==4.13.2",
+]
