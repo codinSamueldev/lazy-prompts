@@ -39,8 +39,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # allauth required apps.
-    'django.contrib.auth',
-    'django.contrib.messages',
     'allauth',
     'allauth.account',
     'allauth.socialaccount', # Optional.
@@ -183,11 +181,21 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
-            'client_id': '123',
-            'secret': '456',
-            'key': ''
+            'client_id': config('GOOGLE_CLIENT_ID', cast=str),
+            'secret': config('GOOGLE_CLIENT_SECRET', cast=str),
+            'key': '',
+        }
+    },
+    'github': {
+        'APP': {
+            'client_id': config('GITHUB_CLIENT_ID', cast=str),
+            'secret': config('GITHUB_CLIENT_SECRET', cast=str),
+            'key': '',
         }
     }
-    'github': {
-    }
 }
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
