@@ -110,8 +110,6 @@ WSGI_APPLICATION = 'lazy_prompts.wsgi.application'
 
 DATABASE_URL = config('DATABASE_URL', cast=str)
 
-print(f"\nDB_URL: {DATABASE_URL}\n")
-
 if DATABASE_URL is not None:
     DATABASES = {
         'default': dj_database_url.config(
@@ -175,11 +173,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Allauth provider specific settings
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
+ACCOUNT_EMAIL_VERIFICATION = "mandatory" # or "optional"
+ACCOUNT_UNIQUE_EMAIL = True
+SOCIALACCOUNT_QUERY_EMAIL = True
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         # For each OAuth based provider, either add a ``SocialApp``
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
         'APP': {
             'client_id': config('GOOGLE_CLIENT_ID', cast=str),
             'secret': config('GOOGLE_CLIENT_SECRET', cast=str),
@@ -187,6 +194,10 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     },
     'github': {
+        'SCOPE': [
+            'user',
+            'user:email',
+        ],
         'APP': {
             'client_id': config('GITHUB_CLIENT_ID', cast=str),
             'secret': config('GITHUB_CLIENT_SECRET', cast=str),
