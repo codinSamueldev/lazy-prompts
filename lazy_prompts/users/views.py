@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
 from .forms import UserRegistrationForm, UserLoginForm
@@ -28,6 +29,8 @@ def my_login(request):
 
     return render(request, "my_login.html", {"form":form})
 
+
+@login_required
 def user_logout(request):
     logout(request)
     return redirect("home")

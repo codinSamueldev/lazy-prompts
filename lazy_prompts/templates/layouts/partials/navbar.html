@@ -41,11 +41,11 @@
                     <li><a href="#" class="nav-link">About</a></li>
 
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                    <li><a href="{% url 'users:logout' %}" class="nav-link">Logout</a></li>
                     <li><a href="#" class="nav-link register-btn">Profile</a></li>
                     {% else %}
-                    <li><a href="{% url 'my_login' %}" class="nav-link">Login</a></li>
-                    <li><a href="{% url 'register' %}" class="nav-link register-btn">Register</a></li>
+                    <li><a href="{% url 'users:my_login' %}" class="nav-link">Login</a></li>
+                    <li><a href="{% url 'users:register' %}" class="nav-link register-btn">Register</a></li>
                     {% endif %}
                 </ul>
 
