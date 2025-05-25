@@ -10,7 +10,7 @@ def registration_view(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect("feed:home")
 
     else:
         form = UserRegistrationForm()
@@ -22,7 +22,7 @@ def my_login(request):
     if request.method == "POST":
         form = UserLoginForm(request.POST)
         if form.is_valid():
-            return redirect("home")
+            return redirect("feed:home")
 
     else:
         form = UserLoginForm()
@@ -33,5 +33,5 @@ def my_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect("home")
+    return redirect("feed:home")
         
