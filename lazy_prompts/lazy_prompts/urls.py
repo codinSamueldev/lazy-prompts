@@ -34,3 +34,9 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 admin.site.site_header = "Lazy Prompts Admin"
 admin.site.site_title = "Lazy Prompts Admin Portal"
 admin.site.index_title = "Bienvenido/a Lazy Prompts Portal"
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
