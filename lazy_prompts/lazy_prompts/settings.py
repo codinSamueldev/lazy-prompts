@@ -54,6 +54,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'cloudinary',
+
     'feed',
     'prompt_posts',
     'likes',
@@ -253,3 +256,16 @@ INTERNAL_IPS = [
     "localhost",
     config("PERSONAL_IP", cast=str, default="0.0.0.0"),
 ]
+
+
+# CDN - CLOUDINARY
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+    cloud_name = config('CLOUDINARY_CLOUD_NAME', cast=str),
+    api_key = config('CLOUDINARY_API_KEY', cast=str),
+    api_secret = config('CLOUDINARY_API_SECRET', cast=str),
+    secure = True
+)
