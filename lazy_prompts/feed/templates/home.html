@@ -1,5 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
+{% load cloudinary %}
 
 {% block title %}Home{% endblock %}
 
@@ -42,22 +43,22 @@
         <!-- Feed Content -->
         <div class="feed-content">
             <!-- Placeholder for feed items -->
-            {% for i in "123"|make_list %}
+            {% for prompt in prompts %}
             <article class="prompt-card">
                 <div class="prompt-card-header">
                     <div class="prompt-meta">
-                        <a href="#" class="author-link">@username</a>
-                        <span class="post-date">2 hours ago</span>
-                        <span class="topic-tag">Coding</span>
+                        <a href="#" class="author-link">{{ prompt.author.username }}</a>
+                        <span class="post-date">{{ prompt.created_at|timesince }}</span>
+                        <span class="topic-tag">{{ prompt.topic.name }}</span>
                     </div>
-                    <h2 class="prompt-title">Example Prompt Title</h2>
+                    <h2 class="prompt-title">{{ prompt.title }}</h2>
                 </div>
                 
                 <div class="prompt-content">
-                    <p class="prompt-excerpt">This is a brief preview of the prompt content...</p>
-                    {% if True %}
+                    <p class="prompt-excerpt">{{ prompt.content|linebreaks }}</p>
+                    {% if prompt.image %}
                     <div class="prompt-image">
-                        <img src="{% static 'assets/placeholder.jpg' %}" alt="Prompt image">
+                        <img src="{% cloudinary_url prompt.image fetch_format='auto' quality='auto:eco' width=800 crop='limit' %}" alt="{{ prompt.title }} image">
                     </div>
                     {% endif %}
                 </div>
