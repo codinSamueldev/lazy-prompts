@@ -41,51 +41,19 @@
         </div>
 
         <!-- Feed Content -->
-        <div class="feed-content">
+        <div class="feed-content" id="feedContent">
             <!-- Placeholder for feed items -->
-            {% for prompt in prompts %}
-            <article class="prompt-card">
-                <div class="prompt-card-header">
-                    <div class="prompt-meta">
-                        <a href="#" class="author-link">{{ prompt.author.username }}</a>
-                        <span class="post-date">{{ prompt.created_at|timesince }}</span>
-                        <span class="topic-tag">{{ prompt.topic.name }}</span>
-                    </div>
-                    <h2 class="prompt-title">{{ prompt.title }}</h2>
-                </div>
-                
-                <div class="prompt-content">
-                    <p class="prompt-excerpt">{{ prompt.content|linebreaks }}</p>
-                    {% if prompt.image %}
-                    <div class="prompt-image">
-                        <img src="{% cloudinary_url prompt.image fetch_format='auto' quality='auto:eco' width=800 crop='limit' %}" alt="{{ prompt.title }} image">
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div class="prompt-card-footer">
-                    <div class="prompt-stats">
-                        <span class="likes-count">
-                            <svg class="icon" viewBox="0 0 24 24">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
-                            1.2k
-                        </span>
-                        <span class="saves-count">
-                            <svg class="icon" viewBox="0 0 24 24">
-                                <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
-                            </svg>
-                            234
-                        </span>
-                    </div>
-                </div>
-            </article>
-            {% endfor %}
+            {% include 'partials/posts.html' with prompts=prompts %}
         </div>
 
         <!-- Load More Button -->
-        <div class="load-more-container">
-            <button class="load-more-btn">Load More</button>
+        <div class="load-more-container" id="load-more-container">
+            {% if has_next %}
+                <button class="load-more-btn" id="load-more-btn" data-next-page="{{ next_page_number }}">
+                    Load More
+                </button>
+                <div class="loading-spinner" id="loading-spinner"></div>
+            {% endif %}
         </div>
 
         <!-- Hot Prompts Section (Mobile) -->
@@ -124,4 +92,56 @@
         </div>
     </aside>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const loadMoreContainer = document.getElementById('load-more-container');
+        
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function() {
+                const nextPage = this.getAttribute('data-next-page');
+                const feedContentToInsert = document.querySelector("#feedContent");
+                
+                // Show loading state
+                loadMoreBtn.style.display = 'none';
+                loadingSpinner.style.display = 'block';
+                
+                // Make AJAX request
+                fetch(`{% url 'feed:load_more_posts' %}?page=${nextPage}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Hide loading spinner
+                    loadingSpinner.style.display = 'none';
+                    
+                    // Append new posts to feed
+                    feedContentToInsert.insertAdjacentHTML('beforeend', data.posts_html);
+                    
+                    // Update load more button
+                    if (data.has_next) {
+                        loadMoreBtn.setAttribute('data-next-page', data.next_page_number);
+                        loadMoreBtn.style.display = 'block';
+                    } else {
+                        // No more posts - hide the load more button
+                        loadMoreContainer.innerHTML = '<p style="text-align: center; color: #666;">No more posts to load</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading more posts:', error);
+                    loadingSpinner.style.display = 'none';
+                    loadMoreBtn.style.display = 'block';
+                    loadMoreBtn.textContent = 'Error - Try Again';
+                    loadMoreBtn.style.background = '#dc3545';
+                });
+            });
+        }
+    });
+</script>
 {% endblock %}
