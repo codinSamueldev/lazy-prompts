@@ -1,8 +1,8 @@
 /* Recoleta Font Family */
 @font-face {
     font-family: 'Recoleta';
-    src: url('../fonts/Recoleta-Light.woff2') format('woff2'),
-         url('../fonts/Recoleta-Light.woff') format('woff');
+    src: url('https://res.cloudinary.com/dbng9d2id/raw/upload/v1748822417/Recoleta-Light_b9oix3.woff2') format('woff2'),
+         url('https://res.cloudinary.com/dbng9d2id/raw/upload/v1748822417/Recoleta-Light_vaptbs.woff') format('woff');
     font-weight: 300;
     font-style: normal;
     font-display: swap;
@@ -10,8 +10,8 @@
 
 @font-face {
     font-family: 'Recoleta';
-    src: url('../fonts/Recoleta-Regular.woff2') format('woff2'),
-         url('../fonts/Recoleta-Regular.woff') format('woff');
+    src: url('https://res.cloudinary.com/dbng9d2id/raw/upload/v1748822500/Recoleta-Regular_xalwe8.woff2') format('woff2'),
+         url('https://res.cloudinary.com/dbng9d2id/raw/upload/v1748822500/Recoleta-Regular_byda66.woff') format('woff');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -19,8 +19,8 @@
 
 @font-face {
     font-family: 'Recoleta';
-    src: url('../fonts/Recoleta-Medium.woff2') format('woff2'),
-         url('../fonts/Recoleta-Medium.woff') format('woff');
+    src: url('https://res.cloudinary.com/dbng9d2id/raw/upload/v1748822589/Recoleta-Medium_ndmbt9.woff2') format('woff2'),
+         url('https://res.cloudinary.com/dbng9d2id/raw/upload/v1748822588/Recoleta-Medium_gpvw7k.woff') format('woff');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -28,8 +28,8 @@
 
 @font-face {
     font-family: 'Recoleta';
-    src: url('../fonts/Recoleta-Bold.woff2') format('woff2'),
-         url('../fonts/Recoleta-Bold.woff') format('woff');
+    src: url('https://res.cloudinary.com/dbng9d2id/raw/upload/v1748822654/Recoleta-Bold_abzb7i.woff2') format('woff2'),
+         url('https://res.cloudinary.com/dbng9d2id/raw/upload/v1748822653/Recoleta-Bold_ysxi5o.woff') format('woff');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
