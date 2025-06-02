@@ -1,0 +1,36 @@
+{% load cloudinary %}
+
+<div id="createPromptModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Create New Prompt</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <form id="createPromptForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                <div class="error-message" data-field="title"></div>
+            </div>
+            <div class="form-group">
+                {{ form.topic.label_tag }}
+                {{ form.topic }}
+                <div class="error-message" data-field="topic"></div>
+            </div>
+            <div class="form-group">
+                {{ form.content.label_tag }}
+                {{ form.content }}
+                <div class="error-message" data-field="content"></div>
+            </div>
+            <div class="form-group">
+                {{ form.image.label_tag }}
+                {{ form.image }}
+                <div class="error-message" data-field="image"></div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">Create Prompt</button>
+            </div>
+        </form>
+    </div>
+</div>

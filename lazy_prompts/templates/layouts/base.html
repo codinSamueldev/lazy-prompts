@@ -3,14 +3,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="preload" href="https://res.cloudinary.com/dbng9d2id/raw/upload/v1748822500/Recoleta-Regular_xalwe8.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://res.cloudinary.com/dbng9d2id/raw/upload/v1748822654/Recoleta-Bold_abzb7i.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://res.cloudinary.com/dbng9d2id/raw/upload/v1748822589/Recoleta-Medium_ndmbt9.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#006A71">
     <meta name="description" content="Discover and share the most effective prompts for your needs. Your go-to destination for ready-to-use, copy-paste prompts that make AI interactions effortless.">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Lazy Prompts | {% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="https://res.cloudinary.com/dbng9d2id/raw/upload/v1748823777/fonts_fsmlz6.css">
-    <link rel="stylesheet" href="https://res.cloudinary.com/dbng9d2id/raw/upload/v1748824110/styles_ust9bg.css">
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -24,6 +27,7 @@
     
     <!-- JavaScript -->
     <script src="https://res.cloudinary.com/dbng9d2id/raw/upload/v1748821945/navbar_aej861.js"></script>
+    <script src="{% static 'js/create-prompt.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
