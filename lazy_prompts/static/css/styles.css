@@ -29,6 +29,16 @@
     --text-3xl: 1.875rem;  /* 30px */
     --text-4xl: 2.25rem;   /* 36px */
 
+    /* Responsive Font Sizes */
+    --mobile-text-xs: 0.75rem;
+    --mobile-text-sm: 0.875rem;
+    --mobile-text-base: 1rem;
+    --mobile-text-lg: 1.125rem;
+    --mobile-text-xl: 1.25rem;
+    --mobile-text-2xl: 1.375rem;
+    --mobile-text-3xl: 1.5rem;
+    --mobile-text-4xl: 1.75rem;
+
     /* Theme Colors */
     --surface-color: #ffffff;
     --surface-hover-color: #f5f5f5;
@@ -225,6 +235,38 @@ body {
     display: none;
 }
 
+/* Responsive Images and Media */
+img,
+video,
+iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+.responsive-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Responsive aspect ratio wrapper */
+.aspect-ratio-box {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 ratio */
+    height: 0;
+    overflow: hidden;
+}
+
+.aspect-ratio-box iframe,
+.aspect-ratio-box embed,
+.aspect-ratio-box object {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 /* Mobile styles */
 @media (max-width: 640px) {
     .navbar-container {
@@ -233,6 +275,7 @@ body {
 
     .navbar-search {
         max-width: none;
+        flex: 1;
     }
 
     .logo-image {
@@ -277,6 +320,13 @@ body {
     .nav-link {
         display: block;
         padding: 0.75rem 1rem;
+        font-size: var(--mobile-text-base);
+    }
+
+    .register-btn {
+        width: auto;
+        text-align: center;
+        margin: 0 1rem;
     }
 
     /* Mobile Topics Section */
@@ -381,6 +431,16 @@ h3, .h3 { font-size: var(--text-2xl); font-weight: 500; }
 h4, .h4 { font-size: var(--text-xl); font-weight: 500; }
 h5, .h5 { font-size: var(--text-lg); font-weight: 500; }
 h6, .h6 { font-size: var(--text-base); font-weight: 500; }
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+    h1, .h1 { font-size: var(--mobile-text-4xl); }
+    h2, .h2 { font-size: var(--mobile-text-3xl); }
+    h3, .h3 { font-size: var(--mobile-text-2xl); }
+    h4, .h4 { font-size: var(--mobile-text-xl); }
+    h5, .h5 { font-size: var(--mobile-text-lg); }
+    h6, .h6 { font-size: var(--mobile-text-base); }
+}
 
 /* Body Text - Keep Secondary Font */
 p, 
@@ -539,4 +599,121 @@ textarea,
 .form-errors li {
     margin-bottom: 0.3em;
     list-style: disc inside;
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+    .navbar-container {
+        padding: 0.75rem 1rem;
+    }
+
+    .navbar-search {
+        max-width: none;
+        flex: 1;
+    }
+
+    .search-input {
+        font-size: var(--mobile-text-base);
+        padding: 0.5rem 2rem 0.5rem 0.75rem;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -280px;
+        height: 100vh;
+        width: 280px;
+        background-color: var(--surface-color);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem 0;
+        transition: right var(--transition-speed);
+        box-shadow: var(--shadow-md);
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+
+    .nav-list {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .nav-list li {
+        width: 100%;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 0.75rem 1rem;
+        font-size: var(--mobile-text-base);
+    }
+
+    .register-btn {
+        width: auto;
+        text-align: center;
+        margin: 0 1rem;
+    }
+}
+
+/* Responsive Forms */
+@media (max-width: 640px) {
+    .form-input,
+    .form-textarea,
+    .form-select {
+        font-size: var(--mobile-text-base);
+        padding: 0.75rem;
+    }
+
+    .form-label {
+        font-size: var(--mobile-text-sm);
+    }
+
+    .form-error {
+        font-size: var(--mobile-text-sm);
+    }
+}
+
+/* Responsive Container */
+@media (max-width: 1024px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* Touch-friendly buttons and links */
+@media (max-width: 768px) {
+    button,
+    .btn,
+    .nav-link,
+    .search-filter-btn {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Responsive utilities */
+.hide-on-mobile {
+    display: none;
+}
+
+.show-on-mobile {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .hide-on-mobile {
+        display: block;
+    }
+
+    .show-on-mobile {
+        display: none;
+    }
 }
