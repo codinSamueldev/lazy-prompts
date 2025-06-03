@@ -347,7 +347,6 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 50px;
 }
 
 .modal-content {
@@ -387,10 +386,6 @@
 
 #createPromptForm {
     padding: 20px;
-}
-
-.form-group {
-    margin-bottom: 20px;
 }
 
 .form-group label {
@@ -538,10 +533,6 @@
     .modal-content {
         width: 95%;
         margin: 10px;
-    }
-    
-    .modal.show {
-        padding-top: 20px;
     }
     
     .form-actions {
