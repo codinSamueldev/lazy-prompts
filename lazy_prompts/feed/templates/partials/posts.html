@@ -2,18 +2,6 @@
 {% load static %}
 {% load cloudinary %}
 
-<!-- Create Prompt Button -->
-{% if user.is_authenticated %}
-<button class="create-prompt-button" id="openCreatePromptBtn">
-    <svg class="icon" viewBox="0 0 24 24" style="width: 24px; height: 24px; margin-right: 8px;">
-        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-    </svg>
-    Create New Prompt
-</button>
-
-{% include 'partials/create_prompt_modal.html' %}
-{% endif %}
-
 <!-- Posts that can be loaded via AJAX -->
 {% for prompt in prompts %}
 <article class="prompt-card">
