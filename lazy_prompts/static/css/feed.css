@@ -129,9 +129,15 @@
 }
 
 .prompt-title {
-    font-size: 1.25rem;
+    font-size: 2rem;
     color: var(--text-color);
     margin: 0;
+}
+
+.prompt-description {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin: 0.5rem 0;
 }
 
 .prompt-content {
