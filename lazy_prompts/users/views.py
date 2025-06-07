@@ -5,7 +5,23 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm, UserLoginForm
 
 
+def user_logged_in_redirect(request) -> bool:
+    if request.user.is_authenticated:
+        return True
+
+    return False
+
+
 def registration_view(request):
+    """
+    View that allows users to register into the platform.
+    """
+
+    # Validate if user is logged-in.
+    if user_logged_in_redirect(request):
+        return redirect("feed:home")
+
+
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
@@ -19,10 +35,17 @@ def registration_view(request):
 
 
 def my_login(request):
+    
+
+    # Validate if user is logged-in.
+    if user_logged_in_redirect(request):
+        return redirect("feed:home")
+
     if request.method == "GET":
         form = UserLoginForm()
         return render(request, "my_login.html", {"form":form})
-
+    
+    # Handle log-in auth flow.
     if request.method == "POST":
         form = UserLoginForm(request.POST)
 
