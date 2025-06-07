@@ -30,6 +30,7 @@ class Topic(models.Model):
 class Prompt(models.Model):
     title:str = models.CharField(max_length=255)
     slug:str = models.SlugField(unique=True)
+    description:str = models.CharField(max_length=500, blank=True, null=True)
     content:str = models.TextField()
     author:str = models.ForeignKey(User, on_delete=models.CASCADE)
     topic:str = models.ForeignKey(Topic, on_delete=models.CASCADE)

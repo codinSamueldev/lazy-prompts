@@ -19,6 +19,11 @@
                 <div class="error-message" data-field="topic"></div>
             </div>
             <div class="form-group">
+                {{ form.description.label_tag }}
+                {{ form.description }}
+                <div class="error-message" data-field="description"></div>
+            </div>
+            <div class="form-group">
                 {{ form.content.label_tag }}
                 {{ form.content }}
                 <div class="error-message" data-field="content"></div>
