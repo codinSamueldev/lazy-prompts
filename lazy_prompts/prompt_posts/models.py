@@ -8,7 +8,7 @@ from datetime import datetime
 
 class Topic(models.Model):
     name:str = models.CharField(max_length=255)
-    slug:str = models.SlugField(unique=True)
+    slug:str = models.SlugField(unique=True, blank=True, null=True)
     description:str = models.TextField()
     created_at:datetime = models.DateTimeField(auto_now_add=True)
     updated_at:datetime = models.DateTimeField(auto_now=True)
@@ -25,11 +25,12 @@ class Topic(models.Model):
         verbose_name = "Topic"
         verbose_name_plural = "Topics"
         ordering = ["-created_at"]
+        db_table_comment = "Table for storing topics with their details, including name and description."
 
 
 class Prompt(models.Model):
     title:str = models.CharField(max_length=255)
-    slug:str = models.SlugField(unique=True)
+    slug:str = models.SlugField(unique=True, blank=True, null=True)
     description:str = models.CharField(max_length=500, blank=True, null=True)
     content:str = models.TextField()
     author:str = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -52,3 +53,10 @@ class Prompt(models.Model):
         verbose_name = "Prompt"
         verbose_name_plural = "Prompts"
         ordering = ["-created_at"]
+        db_table_comment = "Table for storing prompts with their details, including author, topic, and image."
+
+        indexes = [
+            models.Index(fields=['content'], name='prompt_content_idx'),
+            models.Index(fields=['author'], name='prompt_author_idx'),
+            models.Index(fields=['topic'], name='prompt_topic_idx'),
+        ]
