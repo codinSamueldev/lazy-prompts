@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from prompt_posts.models import Prompt
+from prompt_posts.models import Prompt, Topic
 from prompt_posts.forms import PromptCreateForm
 
 
@@ -11,18 +11,16 @@ def home(request):
     """
     Render the home page with paginated prompts.
     """
-    if request.method == "POST":
-        # Handle form submission or other POST logic here
-        # For example, you might want to create a new prompt or filter prompts based on some criteria.
-        pass
 
     prompts = Prompt.objects.all()
+    topics = Topic.objects.all()[:5]
 
     paginator = Paginator(prompts, 3) # 3 Posts per page.
     page_1 = paginator.get_page(1) # Initial load with 3 posts.
 
     context = {
         'prompts': page_1,
+        'topics': topics,
         'has_next': page_1.has_next(),
         'next_page_number': page_1.next_page_number() if page_1.has_next() else None,
         'form': PromptCreateForm()

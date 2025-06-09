@@ -1,6 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 {% load cloudinary %}
+{% load cache %}
 
 {% block title %}Home{% endblock %}
 
@@ -11,6 +12,7 @@
 {% block content %}
 <div class="home-container">
     <!-- Left Sidebar - Hot Prompts (Desktop) -->
+    {% cache 3600 hot_prompts_aside_desktop %}
     <aside class="hot-prompts-sidebar desktop-hot-prompts">
         <div class="section-header">
             <h2>Hot Prompts</h2>
@@ -28,6 +30,7 @@
             {% endfor %}
         </div>
     </aside>
+    {% endcache %}
 
     <!-- Main Feed -->
     <main class="main-feed">
@@ -95,10 +98,10 @@
         </div>
         <div class="topics-list">
             <!-- Placeholder for topics -->
-            {% for topic in "12345"|make_list %}
+            {% for topic in topics %}
             <a href="#" class="topic-card">
-                <span class="topic-name">Example Topic</span>
-                <span class="topic-count">1.2k prompts</span>
+                <span class="topic-name">{{ topic.name }}</span>
+                <span class="topic-count">{{ topic.prompt_set.count }} prompts</span>
             </a>
             {% endfor %}
         </div>
