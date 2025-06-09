@@ -30,7 +30,7 @@
         </div>
         {% if prompt.image %}
         <div class="prompt-image">
-            <img src="{% cloudinary_url prompt.image fetch_format='auto' quality='auto:low' width=600 crop='limit' %}" alt="{{ prompt.title }} image">
+            <img loading="lazy" src="{% cloudinary_url prompt.image fetch_format='auto' quality='auto:low' width=600 crop='limit' %}" alt="{{ prompt.title }} image">
         </div>
         {% endif %}
     </div>
