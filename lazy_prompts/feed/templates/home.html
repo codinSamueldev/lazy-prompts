@@ -98,12 +98,14 @@
         </div>
         <div class="topics-list">
             <!-- Placeholder for topics -->
+            {% cache 3600 topics_sidebar %}
             {% for topic in topics %}
             <a href="#" class="topic-card">
                 <span class="topic-name">{{ topic.name }}</span>
                 <span class="topic-count">{{ topic.prompt_set.count }} prompts</span>
             </a>
             {% endfor %}
+            {% endcache %}
         </div>
     </aside>
 </div>

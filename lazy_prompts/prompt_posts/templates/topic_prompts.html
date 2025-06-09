@@ -1,0 +1,40 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load cloudinary %}
+{% load cache %}
+
+{% block title %}{{ topic.name }} - Prompts{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/feed.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="topic-container">
+    <h1 class="topic-title">{{ topic.name }}</h1>
+    <div class="topic-description">{{ topic.description }}</div>
+
+    <div class="prompts-list">
+        {% for prompt in prompts %}
+        <div class="prompt-card">
+            <h3 class="prompt-title">{{ prompt.title }}</h3>
+            <div class="prompt-meta">
+                <span class="likes-count">{{ prompt.likes.count }} likes</span>
+                <span class="topic-tag">{{ prompt.topic.name }}</span>
+            </div>
+        </div>
+        {% empty %}
+        <p>No prompts found for this topic.</p>
+        {% endfor %}
+    </div>
+
+    <div class="create-prompt-form">
+        <h2>Create a New Prompt</h2>
+        <form method="post" action=".">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Create Prompt</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
