@@ -8,7 +8,7 @@
         <div class="prompt-meta">
             <a href="#" class="author-link">{{ prompt.author.username }}</a>
             <span class="post-date">{{ prompt.created_at|timesince }}</span>
-            <span class="topic-tag">{{ prompt.topic.name }}</span>
+            <a class="topic-tag" href="{% url 'prompt_posts:topic_prompts' slug=prompt.topic.slug %}">{{ prompt.topic.name }}</a>
         </div>
         <h2 class="prompt-title">{{ prompt.title }}</h2>
     </div>
