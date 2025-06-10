@@ -26,7 +26,7 @@ def registration_view(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("feed:home")
+            return redirect("users:my_login")
 
     else:
         form = UserRegistrationForm()
