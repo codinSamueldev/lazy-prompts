@@ -42,7 +42,7 @@ def load_more_posts(request):
         page = paginator.get_page(page_number)
 
         # Render just the posts HTML
-        posts_html = render_to_string('partials/posts.html', context={'prompts': page}, request=request)
+        posts_html = render_to_string('layouts/partials/feed/posts.html', context={'prompts': page}, request=request)
 
         return JsonResponse({
             'posts_html': posts_html,
