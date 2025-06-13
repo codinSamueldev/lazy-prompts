@@ -13,7 +13,7 @@ def home(request):
     """
 
     prompts = Prompt.objects.select_related('author', 'topic')
-    topics = Topic.objects.all()[:5]
+    topics = Topic.objects.select_related('prompt_set')[:5]
 
     paginator = Paginator(prompts, 3) # 3 Posts per page.
     page_1 = paginator.get_page(1) # Initial load with 3 posts.
