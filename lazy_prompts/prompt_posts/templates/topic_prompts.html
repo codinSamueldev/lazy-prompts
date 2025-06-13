@@ -12,7 +12,7 @@
 {% block content %}
     <h1 class="topic-title">{{ topic.name }}</h1>
     <div class="topic-description">{{ topic.description }}</div>
-    {% if not topic.prompt_set.all %}
+    {% if not prompts %}
         <p>No prompts found for this topic.</p>
     {% else %}
         {% include 'layouts/partials/feed/posts.html' %}

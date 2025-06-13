@@ -38,7 +38,9 @@ def topic_prompts(request, slug):
     """Display prompts for a specific topic."""
     try:
         topic = Topic.objects.get(slug=slug)
-        prompts = topic.prompt_set.all()
+
+        if topic.prompt_set.count() >= 1: prompts = topic.prompt_set.select_related('author', 'topic')
+        else: prompts = False
     except Topic.DoesNotExist:
         return JsonResponse({'error': 'Topic not found'}, status=404)
 
