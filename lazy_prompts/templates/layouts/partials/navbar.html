@@ -39,7 +39,7 @@
                 <ul class="nav-list">
                     <li><a href="#" class="nav-link">About</a></li>
 
-                    {% if user.is_authenticated %}
+                    {% if user_auth %}
                     <li><a href="{% url 'users:logout' %}" class="nav-link">Logout</a></li>
                     <li><a href="#" class="nav-link register-btn">Profile</a></li>
                     {% else %}

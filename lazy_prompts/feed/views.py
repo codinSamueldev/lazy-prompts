@@ -12,7 +12,7 @@ def home(request):
     Render the home page with paginated prompts.
     """
 
-    prompts = Prompt.objects.all()
+    prompts = Prompt.objects.select_related('author', 'topic')
     topics = Topic.objects.all()[:5]
 
     paginator = Paginator(prompts, 3) # 3 Posts per page.
@@ -37,7 +37,7 @@ def load_more_posts(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         page_number = request.GET.get("page", 1)
 
-        prompts = Prompt.objects.all()
+        prompts = Prompt.objects.select_related('author', 'topic')
         paginator = Paginator(prompts, 3)
         page = paginator.get_page(page_number)
 

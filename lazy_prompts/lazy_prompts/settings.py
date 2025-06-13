@@ -88,6 +88,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request', # allauth context-processor.
+                'core.context_processors.user_auth_state',  # Custom context processor for user auth state.
             ],
         },
     },
@@ -129,6 +130,8 @@ if DATABASE_URL is not None:
             'LOCATION': config('REDIS_URL', cast=str),
         }
     }
+
+DISABLE_SERVER_SIDE_CURSORS = True
 
 
 # Password validation
