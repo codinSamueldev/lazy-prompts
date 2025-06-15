@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 
     'debug_toolbar',
-
+    
+    'unfold',
     'users',
     'django.contrib.admin',
     'django.contrib.auth',
