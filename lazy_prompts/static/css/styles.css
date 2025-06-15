@@ -177,7 +177,6 @@ body {
     padding: 0.5rem 1rem;
     border-radius: 25px;
     transition: background-color var(--transition-speed);
-    max-width: 100px;
 }
 
 .register-btn:hover {
