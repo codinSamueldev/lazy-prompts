@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.http import JsonResponse
 
 from .forms import UserRegistrationForm, UserLoginForm
 
@@ -66,4 +68,13 @@ def my_login(request):
 def user_logout(request):
     logout(request)
     return redirect("feed:home")
-        
+
+
+@login_required
+def profile(request, username):
+    try:
+        user_profile = User.objects.get(username=username)
+        return render(request, "profile.html", {"user_profile": user_profile})
+    except:
+        return JsonResponse({"error": f"{username} not found!"}, status=404)
+
