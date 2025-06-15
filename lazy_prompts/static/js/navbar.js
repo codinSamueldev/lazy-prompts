@@ -4,38 +4,50 @@ document.addEventListener('DOMContentLoaded', function() {
     const navMenu = document.querySelector('.nav-menu');
     const body = document.body;
     let isMenuOpen = false;
-    let touchStartX = 0;
-    let touchEndX = 0;
+
+    // Debug logging
+    console.log('Navbar JS loaded');
+    console.log('Mobile menu button:', mobileMenuBtn);
+    console.log('Nav menu:', navMenu);
+
+    if (!mobileMenuBtn || !navMenu) {
+        console.error('Required elements not found');
+        return;
+    }
 
     // Create overlay element
-    const overlay = document.createElement('div');
-    overlay.className = 'mobile-menu-overlay';
-    body.appendChild(overlay);
+    let overlay = document.querySelector('.mobile-menu-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'mobile-menu-overlay';
+        body.appendChild(overlay);
+    }
 
     function openMenu() {
+        console.log('Opening menu');
         isMenuOpen = true;
-        requestAnimationFrame(() => {
-            mobileMenuBtn.classList.add('active');
-            navMenu.classList.add('active');
-            overlay.classList.add('active');
-            body.style.overflow = 'hidden';
-        });
+        mobileMenuBtn.classList.add('active');
+        navMenu.classList.add('active');
+        overlay.classList.add('active');
+        body.style.overflow = 'hidden';
     }
 
     function closeMenu() {
         if (!isMenuOpen) return;
+        console.log('Closing menu');
         isMenuOpen = false;
-        requestAnimationFrame(() => {
-            mobileMenuBtn.classList.remove('active');
-            navMenu.classList.remove('active');
-            overlay.classList.remove('active');
-            body.style.overflow = '';
-        });
+        mobileMenuBtn.classList.remove('active');
+        navMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        body.style.overflow = '';
     }
 
     // Toggle menu on button click
-    mobileMenuBtn.addEventListener('click', (e) => {
+    mobileMenuBtn.addEventListener('click', function(e) {
+        console.log('Menu button clicked', isMenuOpen);
+        e.preventDefault();
         e.stopPropagation();
+        
         if (isMenuOpen) {
             closeMenu();
         } else {
@@ -44,76 +56,76 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Close menu when clicking overlay
-    overlay.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', function(e) {
+        console.log('Overlay clicked');
+        e.preventDefault();
+        closeMenu();
+    });
 
     // Handle clicks on the document
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', function(e) {
         if (isMenuOpen && !navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
             closeMenu();
         }
     });
 
     // Prevent menu close when clicking inside
-    navMenu.addEventListener('click', (e) => {
+    navMenu.addEventListener('click', function(e) {
         e.stopPropagation();
     });
 
     // Close menu when clicking a link
     const menuLinks = navMenu.querySelectorAll('a');
     menuLinks.forEach(link => {
-        link.addEventListener('click', closeMenu);
+        link.addEventListener('click', function() {
+            console.log('Menu link clicked');
+            closeMenu();
+        });
     });
 
-    // Swipe to close functionality
-    navMenu.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].clientX;
-    });
-
-    navMenu.addEventListener('touchmove', (e) => {
-        if (!isMenuOpen) return;
-        touchEndX = e.touches[0].clientX;
-        const swipeDistance = touchEndX - touchStartX;
-        
-        if (swipeDistance > 0) {
-            e.preventDefault();
-            navMenu.style.transform = `translateX(${swipeDistance}px)`;
-        }
-    });
-
-    navMenu.addEventListener('touchend', () => {
-        const swipeDistance = touchEndX - touchStartX;
-        navMenu.style.transform = '';
-        
-        if (swipeDistance > 100) {
+    // Handle escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && isMenuOpen) {
             closeMenu();
         }
     });
 
-    // Load More functionality
-    const loadMoreBtn = document.querySelector('.load-more-btn');
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', async function() {
-            this.classList.add('loading');
-            
-            try {
-                // Simulate loading (replace with actual API call)
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                // Add new content here
-                
-            } catch (error) {
-                console.error('Error loading more content:', error);
-            } finally {
-                this.classList.remove('loading');
-            }
-        });
-    }
+    // Touch/swipe functionality for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    navMenu.addEventListener('touchstart', function(e) {
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    navMenu.addEventListener('touchmove', function(e) {
+        if (!isMenuOpen) return;
+        touchEndX = e.touches[0].clientX;
+        const swipeDistance = touchEndX - touchStartX;
+        
+        // Only allow swiping right (positive distance)
+        if (swipeDistance > 0) {
+            navMenu.style.transform = `translateX(${Math.min(swipeDistance, 100)}px)`;
+        }
+    }, { passive: true });
+
+    navMenu.addEventListener('touchend', function() {
+        const swipeDistance = touchEndX - touchStartX;
+        navMenu.style.transform = '';
+        
+        // Close menu if swiped right more than 100px
+        if (swipeDistance > 100) {
+            closeMenu();
+        }
+        
+        touchStartX = 0;
+        touchEndX = 0;
+    }, { passive: true });
 
     // Search functionality
     const searchInput = document.querySelector('.search-input');
     const searchSuggestions = document.querySelector('.search-suggestions');
     const filterBtn = document.querySelector('.search-filter-btn');
-    const activeFilters = document.querySelector('.active-filters');
     
     if (searchInput && searchSuggestions) {
         let debounceTimer;
@@ -123,19 +135,17 @@ document.addEventListener('DOMContentLoaded', function() {
             debounceTimer = setTimeout(() => {
                 const query = this.value.trim();
                 if (query.length >= 2) {
-                    // Show loading state
                     searchSuggestions.innerHTML = '<div class="suggestion-loading">Loading...</div>';
                     searchSuggestions.hidden = false;
                     
-                    // Fetch suggestions (replace with actual API call)
-                    fetchSuggestions(query)
-                        .then(suggestions => {
-                            displaySuggestions(suggestions);
-                        })
-                        .catch(error => {
-                            console.error('Error fetching suggestions:', error);
-                            searchSuggestions.hidden = true;
-                        });
+                    // Simulate search suggestions
+                    setTimeout(() => {
+                        const mockSuggestions = [
+                            { type: 'prompt', text: `${query} for coding` },
+                            { type: 'topic', text: `${query} related topics` }
+                        ];
+                        displaySuggestions(mockSuggestions);
+                    }, 300);
                 } else {
                     searchSuggestions.hidden = true;
                 }
@@ -150,29 +160,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    if (filterBtn && activeFilters) {
-        filterBtn.addEventListener('click', function() {
-            // Toggle filter menu (implement your filter UI logic here)
-            console.log('Toggle filters');
+    // Load More functionality
+    const loadMoreBtn = document.querySelector('.load-more-btn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', async function() {
+            this.classList.add('loading');
+            
+            try {
+                // Simulate loading
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                console.log('Load more content');
+            } catch (error) {
+                console.error('Error loading more content:', error);
+            } finally {
+                this.classList.remove('loading');
+            }
         });
     }
 });
 
-// Mock function for fetching suggestions (replace with actual API call)
-async function fetchSuggestions(query) {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // Mock suggestions (replace with actual API data)
-    return [
-        { type: 'prompt', text: 'Example Prompt 1' },
-        { type: 'topic', text: 'AI & Machine Learning' },
-        { type: 'prompt', text: 'Example Prompt 2' }
-    ].filter(item => item.text.toLowerCase().includes(query.toLowerCase()));
-}
-
 function displaySuggestions(suggestions) {
     const searchSuggestions = document.querySelector('.search-suggestions');
+    
+    if (!searchSuggestions) return;
     
     if (suggestions.length === 0) {
         searchSuggestions.innerHTML = '<div class="no-suggestions">No results found</div>';
@@ -192,6 +202,8 @@ function displaySuggestions(suggestions) {
 // Function to add a filter chip
 function addFilterChip(filterText) {
     const activeFilters = document.querySelector('.active-filters');
+    if (!activeFilters) return;
+    
     const chip = document.createElement('div');
     chip.className = 'filter-chip';
     chip.innerHTML = `
