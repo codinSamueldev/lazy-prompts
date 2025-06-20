@@ -90,6 +90,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request', # allauth context-processor.
                 'core.context_processors.user_auth_state',  # Custom context processor for user auth state.
+                'core.context_processors.feed_related',
             ],
         },
     },
