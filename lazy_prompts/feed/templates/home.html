@@ -92,22 +92,7 @@
     </main>
 
     <!-- Right Sidebar - Topics -->
-    <aside class="topics-sidebar">
-        <div class="section-header">
-            <h2>Topics</h2>
-        </div>
-        <div class="topics-list">
-            <!-- Placeholder for topics -->
-            {% cache 1800 topics_sidebar_navlinks %}
-            {% for topic in topics %}
-            <a href="{% url 'prompt_posts:topic_prompts' slug=topic.slug %}" class="topic-card">
-                <span class="topic-name">{{ topic.name }}</span>
-                <span class="topic-count">{{ topic.prompt_set.count }} prompts</span>
-            </a>
-            {% endfor %}
-            {% endcache %}
-        </div>
-    </aside>
+    {% include 'layouts/partials/topics/topic_list.html' %}
 </div>
 
 <script async>
