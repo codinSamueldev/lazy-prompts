@@ -6,7 +6,7 @@
 <article class="prompt-card">
     <div class="prompt-card-header">
         <div class="prompt-meta">
-            <a href="#" class="author-link">{{ prompt.author.username }}</a>
+            <a href="{% url 'users:profile' username=prompt.author.username %}" class="author-link">{{ prompt.author.username }}</a>
             <span class="post-date">{{ prompt.created_at|timesince }}</span>
             <a class="topic-tag" href="{% url 'prompt_posts:topic_prompts' slug=prompt.topic.slug %}">{{ prompt.topic.name }}</a>
         </div>
