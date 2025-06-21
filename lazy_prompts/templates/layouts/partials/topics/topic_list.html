@@ -1,21 +1,30 @@
 {% load cache %}
 
-<div class="section-header">
-    {% cache 1800 topics_sidebar_navlinks %}
+<div class="topics-container">
+    <div class="section-header">
+        <h2>Topics</h2>
+    </div>
         {% for topic in topics %}
-        <a href="{% url 'prompt_posts:topic_prompts' slug=topic.slug %}" class="topic-card" style="
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 0.75rem 1rem;
-                text-decoration: none;
-                color: var(--text-color);
-                border-radius: 6px;
-                transition: background-color 0.2s;">
-                <span class="topic-name">{{ topic.name }}</span>
-                <span class="topic-count">{{ topic.prompt_set.count }} prompts</span>
-        </a>
+        <div class="topic-card">
+            <a href="{% url 'prompt_posts:topic_prompts' slug=topic.slug %}" class="topics-list">
+                    <span class="topic-name">{{ topic.name }}</span>
+                    <span class="topic-count">{{ topic.prompt_set.count }} prompts</span>
+                    <svg 
+                        class="external-link-icon" 
+                        width="16" height="16" 
+                        viewBox="0 0 16 16" 
+                        fill="none" 
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-label="Opens topic page"
+                        role="img"
+                        style="vertical-align: middle; margin-left: 0.3em; color: #888;">
+                        <title>Opens topic page</title>
+                        <path d="M10.5 2a.5.5 0 0 1 .5.5V4a.5.5 0 0 0 1 0V1.5A1.5 1.5 0 0 0 10.5 0H3A2 2 0 0 0 1 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-7.5A1.5 1.5 0 0 0 13.5 4H12a.5.5 0 0 0 0 1h1.5a.5.5 0 0 1 .5.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h7.5z" fill="currentColor"/>
+                        <path d="M15.354.646a.5.5 0 0 0-.708 0l-6.5 6.5a.5.5 0 0 0 .708.708l6.5-6.5a.5.5 0 0 0 0-.708z" fill="currentColor"/>
+                        <path d="M11 1.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V2.707l-7.146 7.147a.5.5 0 0 1-.708-.708L13.293 2H11.5a.5.5 0 0 1-.5-.5z" fill="currentColor"/>
+                    </svg>
+            </a>
+        </div>
         {% endfor %}
-    {% endcache %}
 </div>
         

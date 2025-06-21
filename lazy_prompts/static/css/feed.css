@@ -9,10 +9,9 @@
 }
 
 /* Hot Prompts Sidebar */
-.hot-prompts-sidebar {
+.hot-prompts-sidebar, .topics-container {
     background: var(--surface-color);
     border-radius: 12px;
-    padding: 1rem;
     position: sticky;
     top: calc(var(--navbar-height) + 2rem);
     height: fit-content;
@@ -33,7 +32,7 @@
     background-color: var(--surface-hover-color);
 }
 
-.hot-prompt-title {
+.hot-prompt-title, .topic-name {
     font-size: 1rem;
     margin-bottom: 0.5rem;
     color: var(--text-color);
@@ -237,7 +236,11 @@
 }
 
 .section-header {
-    margin-bottom: 1rem;
+    background: var(--surface-color);
+    border-radius: 12px;
+    padding: 1rem;
+    top: calc(var(--navbar-height) + 2rem);
+    height: fit-content;
 }
 
 .section-header h2 {
@@ -249,18 +252,19 @@
 .topics-list {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
 }
 
 .topic-card {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 1.5rem;
     text-decoration: none;
     color: var(--text-color);
     border-radius: 6px;
     transition: background-color 0.2s;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
 }
 
 .topic-card:hover {

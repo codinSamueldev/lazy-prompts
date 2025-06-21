@@ -911,3 +911,7 @@ textarea,
     display: block;
     opacity: 1;
 }
+
+a {
+    text-decoration: none;
+}
