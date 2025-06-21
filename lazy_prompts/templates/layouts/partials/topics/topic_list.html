@@ -4,6 +4,7 @@
     <div class="section-header">
         <h2>Topics</h2>
     </div>
+    {% cache 1800 topics_sidebar_navlinks %}
         {% for topic in topics %}
         <div class="topic-card">
             <a href="{% url 'prompt_posts:topic_prompts' slug=topic.slug %}" class="topics-list">
@@ -26,5 +27,6 @@
             </a>
         </div>
         {% endfor %}
+    {% endcache %}
 </div>
         
