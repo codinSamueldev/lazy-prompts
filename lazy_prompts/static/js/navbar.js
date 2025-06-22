@@ -141,8 +141,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Simulate search suggestions
                     setTimeout(() => {
                         const mockSuggestions = [
-                            { type: 'prompt', text: `${query} for coding` },
-                            { type: 'topic', text: `${query} related topics` }
+                            { type: 'Prompt', text: `${query}` },
+                            { type: 'Title', text: `${query}` }
                         ];
                         displaySuggestions(mockSuggestions);
                     }, 300);
@@ -190,10 +190,10 @@ function displaySuggestions(suggestions) {
     }
 
     const html = suggestions.map(suggestion => `
-        <div class="suggestion-item ${suggestion.type}">
-            <span class="suggestion-type">${suggestion.type}</span>
-            <span class="suggestion-text">${suggestion.text}</span>
-        </div>
+        <button type="submit" class="suggestion-item ${suggestion.type}">
+            <span name="search-${suggestion.type}" class="suggestion-type">${suggestion.type}</span>
+            <span name="search-${suggestion.type}-text" class="suggestion-text"> "${suggestion.text}"</span>
+        </button>
     `).join('');
 
     searchSuggestions.innerHTML = html;
@@ -220,4 +220,28 @@ function addFilterChip(filterText) {
 
     activeFilters.hidden = false;
     activeFilters.appendChild(chip);
-} 
+}
+
+// Delegate click event for suggestion buttons
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.suggestion-item');
+    if (!btn) return;
+
+    e.preventDefault();
+
+    const form = btn.closest('form');
+    const searchInput = form.querySelector('.search-input');
+    const type = btn.classList.contains('Title') ? 'search-title' : 'search-prompt';
+
+    // Remove any existing filter input
+    form.querySelectorAll('input[name="search-title"], input[name="search-prompt"]').forEach(el => el.remove());
+
+    // Create and append the correct hidden input
+    const hidden = document.createElement('input');
+    hidden.type = 'hidden';
+    hidden.name = type;
+    hidden.value = searchInput.value;
+    form.appendChild(hidden);
+
+    form.submit();
+});

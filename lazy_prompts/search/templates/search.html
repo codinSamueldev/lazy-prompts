@@ -1,9 +1,19 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
+{% load cloudinary %}
+{% load cache %}
 
-{% block title %} Search Results For: {{ args }} {% endblock %}
+{% block title %} Search Results For: {{ selected_search }} {% endblock %}
 
 {% block content %}
-    <h1>Search results for: {{ args }}</h1>
+    <h1>{{ message }}</h1>
+    <p>{{ selected_search }}</p>
+
+    <h2>
+        {{ keywords }}
+    </h2>
+
+    <input type="hidden">
 
     
 {% endblock %}

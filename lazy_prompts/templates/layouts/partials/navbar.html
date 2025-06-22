@@ -6,7 +6,7 @@
         <form action="{% url 'search:search_prompts' %}" method="get" autocomplete="off" class="navbar-search-form">
             <div class="navbar-search">
                 <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Search prompts..." name="search">
+                    <input type="text" class="search-input" placeholder="Search prompts..." name="keywords" aria-label="Search prompts" required>
                     <button type="submit" class="search-filter-btn" aria-label="Search filters">
                         <svg class="filter-icon" viewBox="0 0 24 24" width="24" height="24">
                             <path d="M3 6h18M7 12h10M11 18h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
