@@ -915,3 +915,7 @@ textarea,
 a {
     text-decoration: none;
 }
+
+.navbar-search-form{
+    display: contents;
+}

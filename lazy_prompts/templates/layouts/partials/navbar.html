@@ -3,22 +3,24 @@
 <header class="navbar">
     <div class="navbar-container">
         <!-- Left section with search -->
-        <div class="navbar-search">
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Search prompts..." name="search">
-                <button class="search-filter-btn" aria-label="Search filters">
-                    <svg class="filter-icon" viewBox="0 0 24 24" width="24" height="24">
-                        <path d="M3 6h18M7 12h10M11 18h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                </button>
-                <div class="search-suggestions" hidden>
-                    <!-- Suggestions will be populated by JavaScript -->
+        <form action="{% url 'search:search_prompts' %}" method="get" autocomplete="off" class="navbar-search-form">
+            <div class="navbar-search">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search prompts..." name="search">
+                    <button type="submit" class="search-filter-btn" aria-label="Search filters">
+                        <svg class="filter-icon" viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M3 6h18M7 12h10M11 18h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    <div class="search-suggestions" hidden>
+                        <!-- Suggestions will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="active-filters" hidden>
+                    <!-- Active filter chips will be added here -->
                 </div>
             </div>
-            <div class="active-filters" hidden>
-                <!-- Active filter chips will be added here -->
-            </div>
-        </div>
+        </form>
 
         <!-- Center section with logo -->
         <div class="navbar-logo">
