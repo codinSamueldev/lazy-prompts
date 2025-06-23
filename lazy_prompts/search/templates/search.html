@@ -9,11 +9,10 @@
     <h1>{{ message }}</h1>
     <p>{{ selected_search }}</p>
 
-    <h2>
-        {{ keywords }}
-    </h2>
-
-    <input type="hidden">
-
+    {% if not prompts %}
+        <p>No prompts found, try searching with something else :d</p>
+    {% else %}
+        {% include 'layouts/partials/feed/posts.html' %}
+    {% endif %}
     
 {% endblock %}
