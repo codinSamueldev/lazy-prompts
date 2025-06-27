@@ -1,3 +1,60 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
-# Create your views here.
+from prompt_posts.models import Prompt
+from .models import Like
+
+
+@login_required
+def toggle_like(request) -> JsonResponse:
+    """
+    This view is responsible for handling the like toggle functionality.
+    
+    Returns:
+        *JSON response so the front-end handles the rest with the returned data.
+    """
+
+    prompt_id = request.POST.get('prompt_id', None)
+    user = request.user
+
+    print(f"\n\n\n{user}\n\n\n")
+
+    if not prompt_id:
+        return JsonResponse(
+                {'error': 'Prompt ID is missing...'},
+                status=400
+                )
+
+    try:
+        prompt = get_object_or_404(Prompt, id=prompt_id)
+    except Prompt.DoesNotExist:
+        return JsonResponse(
+                {'error': 'No prompt found with the given id...'},
+                status=404
+                )
+
+    # If the user has liked the prompt, then 'dislike' it. Otherwise, 'like' the prompt.
+    liked = None
+
+    try:
+        like = Like.objects.get(user=user, prompt=prompt)
+        like.delete()
+        liked = False
+    except Like.DoesNotExist:
+        Like.objects.create(user=user, prompt=prompt)
+        liked = True
+
+    # Get likes count.
+    new_like_count = prompt.likes_count
+
+
+    return JsonResponse(
+            {
+                'prompt_id': prompt_id,
+                'is_liked': liked,
+                'new_like_count': new_like_count,
+            },
+            status=200)
+
