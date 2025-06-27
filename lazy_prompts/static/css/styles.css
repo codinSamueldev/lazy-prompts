@@ -1117,6 +1117,13 @@ a {
     cursor: pointer;
 }
 
+/* Style for a liked heart icon */
+.prompt-stats .like-button .icon.liked {
+    fill: currentColor; /* currentColor for liked state */
+    /* Example: slightly scale up when liked for visual feedback */
+    transform: scale(1.1); 
+}
+
 .likes-count:hover,
 .saves-count:hover {
     color: var(--primary-color);

@@ -89,24 +89,120 @@ function showCopySuccess(button) {
 }
 
 
-/*
-function copyPromptContent(button) {
-    console.log('=== DEBUG INFO ===');
-    
-    const promptExcerpt = button.parentElement.querySelector('.prompt-excerpt');
-    console.log('Found element:', promptExcerpt);
-    
-    if (promptExcerpt) {
-        console.log('innerHTML:', promptExcerpt.innerHTML);
-        console.log('textContent:', promptExcerpt.textContent);
-        console.log('innerText:', promptExcerpt.innerText);
-        console.log('textContent length:', promptExcerpt.textContent.length);
-        console.log('textContent after trim:', promptExcerpt.textContent.trim());
-        console.log('textContent after trim length:', promptExcerpt.textContent.trim().length);
+// Function to get CSRF token from cookies
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-    
-    console.log('=== END DEBUG ===');
+    return cookieValue;
 }
-*/
+
+// Function to format large numbers (e.g., 1200 -> "1.2k")
+function formatNumber(num) {
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    }
+    if (num >= 1000) {
+        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    }
+    return num;
+}
+
+// Event listener for like buttons
+document.addEventListener('DOMContentLoaded', () => {
+    const likeButtons = document.querySelectorAll('.like-button');
+    const csrftoken = getCookie('csrftoken');
+
+    likeButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const promptId = this.dataset.promptId;
+            const isLikedInitially = this.dataset.isLiked === 'true'; // Check if user is authenticated
+
+            // If user is not authenticated, redirect to login (optional, but good UX)
+            if (!isLikedInitially && !confirm('You need to be logged in to like prompts. Do you want to log in now?')) {
+                window.location.href = "{% url 'users:my_login' %}"; // Redirect to login page
+                return;
+            }
+
+            const icon = this.querySelector('.icon');
+            const likesCountDisplay = this.querySelector('.likes-count-display');
+
+            // Optimistic UI update
+            let currentLikes = parseInt(likesCountDisplay.textContent);
+            let isLiked = icon.classList.contains('liked');
+
+            if (isLiked) {
+                icon.classList.remove('liked');
+                likesCountDisplay.textContent = formatNumber(currentLikes - 1);
+            } else {
+                icon.classList.add('liked');
+                likesCountDisplay.textContent = formatNumber(currentLikes + 1);
+            }
+
+            try {
+                const response = await fetch("{% url 'likes:toggle_like' %}", { // Use the defined URL
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: `prompt_id=${promptId}`
+                });
+
+                if (!response.ok) {
+                    // Revert optimistic update if API call fails
+                    if (isLiked) {
+                        icon.classList.add('liked');
+                        likesCountDisplay.textContent = formatNumber(currentLikes);
+                    } else {
+                        icon.classList.remove('liked');
+                        likesCountDisplay.textContent = formatNumber(currentLikes);
+                    }
+                    if (response.status === 401 || response.status === 403) {
+                         // User is not authenticated or Forbidden
+                         alert('You must be logged in to like prompts.');
+                         window.location.href = "{% url 'users:my_login' %}"; // Redirect to login page
+                    } else {
+                         const errorData = await response.json();
+                         console.error('Error toggling like:', errorData.error || response.statusText);
+                         alert('An error occurred. Please try again.');
+                    }
+                    return;
+                }
+
+                const data = await response.json();
+                
+                // Update UI based on actual response (corrects optimistic update if needed)
+                if (data.is_liked) {
+                    icon.classList.add('liked');
+                } else {
+                    icon.classList.remove('liked');
+                }
+                likesCountDisplay.textContent = formatNumber(data.new_like_count);
+
+            } catch (error) {
+                console.error('Network error or unexpected issue:', error);
+                // Revert optimistic update on network error
+                if (isLiked) {
+                    icon.classList.add('liked');
+                    likesCountDisplay.textContent = formatNumber(currentLikes);
+                } else {
+                    icon.classList.remove('liked');
+                    likesCountDisplay.textContent = formatNumber(currentLikes);
+                }
+                alert('A network error occurred. Please try again.');
+            }
+        });
+    });
+});
 
 

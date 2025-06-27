@@ -49,6 +49,19 @@ class Prompt(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+    @property
+    def likes_count(self):
+        return self.like_set.count()
+
+    def is_liked_by_user(self, user):
+        if user.is_authenticated:
+            # Import Like model here to avoid circular imports
+            from likes.models import Like
+            return Like.objects.filter(user=user, prompt=self).exists()
+
+        return False
+
+
     class Meta:
         verbose_name = "Prompt"
         verbose_name_plural = "Prompts"

@@ -6,6 +6,6 @@ from . import views
 app_name = 'likes'
 
 urlpatterns = [
-        path('toggle-like/', views.toggle_like, name="toggle_likes"),
+        path('toggle-like/', views.toggle_like, name="toggle_like"),
 ]
 
