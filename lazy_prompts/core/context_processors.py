@@ -1,3 +1,6 @@
+from django.urls import reverse
+
+
 def user_auth_state(request):
     """
     Context processor to add user authentication status to the context.
@@ -23,5 +26,18 @@ def feed_related(request):
     return {
             'topics': Topic.objects.select_related()[:5],
             'user_liked_prompt_ids': liked_prompt_ids,
+            }
+
+def links(request):
+    try:
+        toggle_like_url = reverse("likes:toggle_like")
+        login_url = reverse("users:my_login")
+    except:
+        toggle_like_url = ""
+        login_url = ""
+
+    return {
+            'toggle_like_url': toggle_like_url,
+            'login_url': login_url,
             }
 

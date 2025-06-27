@@ -19,7 +19,6 @@ def toggle_like(request) -> JsonResponse:
     prompt_id = request.POST.get('prompt_id', None)
     user = request.user
 
-    print(f"\n\n\n{user}\n\n\n")
 
     if not prompt_id:
         return JsonResponse(

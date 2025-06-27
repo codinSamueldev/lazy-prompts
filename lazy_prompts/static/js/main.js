@@ -125,11 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
     likeButtons.forEach(button => {
         button.addEventListener('click', async function() {
             const promptId = this.dataset.promptId;
-            const isLikedInitially = this.dataset.isLiked === 'true'; // Check if user is authenticated
+            const isLikedInitially = this.dataset.isLiked === 'true';
 
-            // If user is not authenticated, redirect to login (optional, but good UX)
-            if (!isLikedInitially && !confirm('You need to be logged in to like prompts. Do you want to log in now?')) {
-                window.location.href = "{% url 'users:my_login' %}"; // Redirect to login page
+            // Check if URLs are available
+            if (!window.djangoUrls || !window.djangoUrls.toggleLike) {
+                console.error('Django URLs not available');
+                alert('Configuration error. Please refresh the page.');
                 return;
             }
 
@@ -149,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const response = await fetch("{% url 'likes:toggle_like' %}", { // Use the defined URL
+                const response = await fetch(window.djangoUrls.toggleLike, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -170,7 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (response.status === 401 || response.status === 403) {
                          // User is not authenticated or Forbidden
                          alert('You must be logged in to like prompts.');
-                         window.location.href = "{% url 'users:my_login' %}"; // Redirect to login page
+                         if (window.djangoUrls.login) {
+                             window.location.href = window.djangoUrls.login;
+                         }
                     } else {
                          const errorData = await response.json();
                          console.error('Error toggling like:', errorData.error || response.statusText);
@@ -204,5 +207,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-
-

@@ -26,6 +26,14 @@
     </main>
     {% include 'layouts/partials/footer.html' %}
     
+    <!-- URL Configuration for JavaScript -->
+    <script>
+        window.djangoUrls = {
+            toggleLike: "{{ toggle_like_url }}",
+            login: "{{ login_url }}"
+        };
+    </script>
+    
     <!-- JavaScript -->
     <script src="{% static 'js/navbar.js' %}"></script>
     <script async src="{% static 'js/create-prompt.js' %}"></script>
