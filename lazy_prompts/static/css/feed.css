@@ -87,57 +87,6 @@
 }
 
 
-/* Topics Sidebar */
-.topics-sidebar {
-    background: var(--surface-color);
-    border-radius: 12px;
-    padding: 1rem;
-    position: sticky;
-    top: calc(var(--navbar-height) + 2rem);
-    height: fit-content;
-}
-
-.section-header {
-    background: var(--surface-color);
-    border-radius: 12px;
-    padding: 1rem;
-    top: calc(var(--navbar-height) + 2rem);
-    height: fit-content;
-}
-
-.section-header h2 {
-    font-size: 1.25rem;
-    color: var(--text-color);
-    margin: 0;
-}
-
-.topics-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.topic-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 1.5rem;
-    text-decoration: none;
-    color: var(--text-color);
-    border-radius: 6px;
-    transition: background-color 0.2s;
-    border-bottom: 1px solid var(--border-color);
-    cursor: pointer;
-}
-
-.topic-card:hover {
-    background-color: var(--surface-hover-color);
-}
-
-.topic-count {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-}
-
 /* Load More Button */
 .load-more-container {
     display: flex;
