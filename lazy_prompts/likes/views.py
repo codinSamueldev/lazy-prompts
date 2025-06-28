@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404 
+from django.views.decorators.http import require_POST
 
 from prompt_posts.models import Prompt
 from .models import Like
 
 
-@login_required
+@require_POST
 def toggle_like(request) -> JsonResponse:
     """
     This view is responsible for handling the like toggle functionality.
@@ -15,6 +15,12 @@ def toggle_like(request) -> JsonResponse:
     Returns:
         *JSON response so the front-end handles the rest with the returned data.
     """
+
+    if not request.user.is_authenticated:
+        return JsonResponse(
+                {'error': 'Authentication required. Please log in to like prompts.'},
+                status=401
+                )
 
     prompt_id = request.POST.get('prompt_id', None)
     user = request.user

@@ -159,6 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: `prompt_id=${promptId}`
                 });
 
+                console.log('Response status:', response.status); // Safe debug log
+
                 if (!response.ok) {
                     // Revert optimistic update if API call fails
                     if (isLiked) {
@@ -168,20 +170,28 @@ document.addEventListener('DOMContentLoaded', () => {
                         icon.classList.remove('liked');
                         likesCountDisplay.textContent = formatNumber(currentLikes);
                     }
+                    
                     if (response.status === 401 || response.status === 403) {
-                         // User is not authenticated or Forbidden
-                         alert('You must be logged in to like prompts.');
-                         if (window.djangoUrls.login) {
-                             window.location.href = window.djangoUrls.login;
-                         }
+                        // User is not authenticated or Forbidden
+                        alert('You must be logged in to like prompts.');
+                        if (window.djangoUrls.login) {
+                            window.location.href = window.djangoUrls.login;
+                        }
                     } else {
-                         const errorData = await response.json();
-                         console.error('Error toggling like:', errorData.error || response.statusText);
-                         alert('An error occurred. Please try again.');
+                        // Try to parse JSON error, but handle cases where it's not JSON
+                        try {
+                            const errorData = await response.json();
+                            console.error('Error toggling like:', errorData.error || response.statusText);
+                            alert('An error occurred. Please try again.');
+                        } catch (jsonError) {
+                            console.error('Non-JSON error response:', response.statusText);
+                            alert('An error occurred. Please try again.');
+                        }
                     }
                     return;
                 }
 
+                // Only try to parse JSON if response is ok
                 const data = await response.json();
                 
                 // Update UI based on actual response (corrects optimistic update if needed)
