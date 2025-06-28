@@ -119,92 +119,56 @@ function formatNumber(num) {
 
 // Event listener for like buttons
 document.addEventListener('DOMContentLoaded', () => {
-    const likeButtons = document.querySelectorAll('.like-button');
     const csrftoken = getCookie('csrftoken');
 
-    likeButtons.forEach(button => {
-        button.addEventListener('click', async function() {
-            const promptId = this.dataset.promptId;
-            const isLikedInitially = this.dataset.isLiked === 'true';
+    // Use event delegation - attach listener to document/body instead of individual buttons
+    document.addEventListener('click', async function(event) {
+        // Check if the clicked element is a like button or inside a like button
+        const likeButton = event.target.closest('.like-button');
+        
+        if (!likeButton) return; // Not a like button click, ignore
+        
+        event.preventDefault(); // Prevent any default behavior
+        
+        const promptId = likeButton.dataset.promptId;
+        const isLikedInitially = likeButton.dataset.isLiked === 'true';
 
-            // Check if URLs are available
-            if (!window.djangoUrls || !window.djangoUrls.toggleLike) {
-                console.error('Django URLs not available');
-                alert('Configuration error. Please refresh the page.');
-                return;
-            }
+        // Check if URLs are available
+        if (!window.djangoUrls || !window.djangoUrls.toggleLike) {
+            console.error('Django URLs not available');
+            alert('Configuration error. Please refresh the page.');
+            return;
+        }
 
-            const icon = this.querySelector('.icon');
-            const likesCountDisplay = this.querySelector('.likes-count-display');
+        const icon = likeButton.querySelector('.icon');
+        const likesCountDisplay = likeButton.querySelector('.likes-count-display');
 
-            // Optimistic UI update
-            let currentLikes = parseInt(likesCountDisplay.textContent);
-            let isLiked = icon.classList.contains('liked');
+        // Optimistic UI update
+        let currentLikes = parseInt(likesCountDisplay.textContent);
+        let isLiked = icon.classList.contains('liked');
 
-            if (isLiked) {
-                icon.classList.remove('liked');
-                likesCountDisplay.textContent = formatNumber(currentLikes - 1);
-            } else {
-                icon.classList.add('liked');
-                likesCountDisplay.textContent = formatNumber(currentLikes + 1);
-            }
+        if (isLiked) {
+            icon.classList.remove('liked');
+            likesCountDisplay.textContent = formatNumber(currentLikes - 1);
+        } else {
+            icon.classList.add('liked');
+            likesCountDisplay.textContent = formatNumber(currentLikes + 1);
+        }
 
-            try {
-                const response = await fetch(window.djangoUrls.toggleLike, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': csrftoken,
-                    },
-                    body: `prompt_id=${promptId}`
-                });
+        try {
+            const response = await fetch(window.djangoUrls.toggleLike, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: `prompt_id=${promptId}`
+            });
 
-                console.log('Response status:', response.status); // Safe debug log
+            console.log('Response status:', response.status);
 
-                if (!response.ok) {
-                    // Revert optimistic update if API call fails
-                    if (isLiked) {
-                        icon.classList.add('liked');
-                        likesCountDisplay.textContent = formatNumber(currentLikes);
-                    } else {
-                        icon.classList.remove('liked');
-                        likesCountDisplay.textContent = formatNumber(currentLikes);
-                    }
-                    
-                    if (response.status === 401 || response.status === 403) {
-                        // User is not authenticated or Forbidden
-                        alert('You must be logged in to like prompts.');
-                        if (window.djangoUrls.login) {
-                            window.location.href = window.djangoUrls.login;
-                        }
-                    } else {
-                        // Try to parse JSON error, but handle cases where it's not JSON
-                        try {
-                            const errorData = await response.json();
-                            console.error('Error toggling like:', errorData.error || response.statusText);
-                            alert('An error occurred. Please try again.');
-                        } catch (jsonError) {
-                            console.error('Non-JSON error response:', response.statusText);
-                            alert('An error occurred. Please try again.');
-                        }
-                    }
-                    return;
-                }
-
-                // Only try to parse JSON if response is ok
-                const data = await response.json();
-                
-                // Update UI based on actual response (corrects optimistic update if needed)
-                if (data.is_liked) {
-                    icon.classList.add('liked');
-                } else {
-                    icon.classList.remove('liked');
-                }
-                likesCountDisplay.textContent = formatNumber(data.new_like_count);
-
-            } catch (error) {
-                console.error('Network error or unexpected issue:', error);
-                // Revert optimistic update on network error
+            if (!response.ok) {
+                // Revert optimistic update if API call fails
                 if (isLiked) {
                     icon.classList.add('liked');
                     likesCountDisplay.textContent = formatNumber(currentLikes);
@@ -212,8 +176,46 @@ document.addEventListener('DOMContentLoaded', () => {
                     icon.classList.remove('liked');
                     likesCountDisplay.textContent = formatNumber(currentLikes);
                 }
-                alert('A network error occurred. Please try again.');
+                
+                if (response.status === 401 || response.status === 403) {
+                    alert('You must be logged in to like prompts.');
+                    if (window.djangoUrls.login) {
+                        window.location.href = window.djangoUrls.login;
+                    }
+                } else {
+                    try {
+                        const errorData = await response.json();
+                        console.error('Error toggling like:', errorData.error || response.statusText);
+                        alert('An error occurred. Please try again.');
+                    } catch (jsonError) {
+                        console.error('Non-JSON error response:', response.statusText);
+                        alert('An error occurred. Please try again.');
+                    }
+                }
+                return;
             }
-        });
+
+            const data = await response.json();
+            
+            // Update UI based on actual response
+            if (data.is_liked) {
+                icon.classList.add('liked');
+            } else {
+                icon.classList.remove('liked');
+            }
+            likesCountDisplay.textContent = formatNumber(data.new_like_count);
+
+        } catch (error) {
+            console.error('Network error or unexpected issue:', error);
+            // Revert optimistic update on network error
+            if (isLiked) {
+                icon.classList.add('liked');
+                likesCountDisplay.textContent = formatNumber(currentLikes);
+            } else {
+                icon.classList.remove('liked');
+                likesCountDisplay.textContent = formatNumber(currentLikes);
+            }
+            alert('A network error occurred. Please try again.');
+        }
     });
 });
