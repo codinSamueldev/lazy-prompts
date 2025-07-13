@@ -22,11 +22,24 @@ def feed_related(request):
         # Get a set of prompt IDs the current user has liked.
         liked_prompt_ids = set(Like.objects.filter(user=request.user).values_list('prompt_id', flat=True))
 
+    # Fetch top 5 hot prompts.
+    counter = 0
+    hot_prompts = []
+
+    for prompt in Prompt.objects.all():
+        if counter == 4:
+            break
+
+        if prompt.likes_count >= 1:
+            counter += 1
+            hot_prompts.append(prompt)
+
 
     return {
             'topics': Topic.objects.select_related()[:5],
             'user_liked_prompt_ids': liked_prompt_ids,
-            }
+            'hot_prompts': hot_prompts,
+    }
 
 def links(request):
     try:

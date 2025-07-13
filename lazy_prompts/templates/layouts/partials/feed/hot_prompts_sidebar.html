@@ -1,0 +1,19 @@
+{% load cache %}
+
+<aside class="hot-prompts-sidebar">
+    <div class="section-header">
+        <h2>Hot Prompts</h2>
+    </div>
+    <div class="hot-prompts-list">
+        <!-- Placeholder for hot prompts -->
+        {% for hot in hot_prompts %}
+        <div class="hot-prompt-card">
+            <h3 class="hot-prompt-title">{{ hot.title }}</h3>
+            <div class="hot-prompt-meta">
+                <span class="likes-count">{{ hot.likes_count }} likes</span>
+                <span class="topic-tag">{{ hot.topic.name }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</aside>
