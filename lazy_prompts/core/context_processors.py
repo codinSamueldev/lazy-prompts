@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.db.models import Count
 
 
 def user_auth_state(request):
@@ -19,26 +20,25 @@ def feed_related(request):
     liked_prompt_ids = set()
 
     if request.user.is_authenticated:
-        # Get a set of prompt IDs the current user has liked.
         liked_prompt_ids = set(Like.objects.filter(user=request.user).values_list('prompt_id', flat=True))
 
-    # Fetch top 5 hot prompts.
-    counter = 0
-    hot_prompts = []
-
-    for prompt in Prompt.objects.all():
-        if counter == 4:
-            break
-
-        if prompt.likes_count >= 1:
-            counter += 1
-            hot_prompts.append(prompt)
-
+    # Fetching hot prompts based on the number of likes
+    # Using annotate to count likes and filter prompts with at least one like
+    # Ordering by the count of likes in descending order and limiting to 5
+    try:
+        hot_prompts = list(
+            Prompt.objects.annotate(annotated_likes_count=Count('like'))
+            .filter(annotated_likes_count__gte=1)
+            .order_by('-annotated_likes_count')[:5]
+        )
+    except Exception as e:
+        print(f"Something happened... - {e}")
+        hot_prompts = []
 
     return {
-            'topics': Topic.objects.select_related()[:5],
-            'user_liked_prompt_ids': liked_prompt_ids,
-            'hot_prompts': hot_prompts,
+        'topics': Topic.objects.select_related()[:5],
+        'user_liked_prompt_ids': liked_prompt_ids,
+        'hot_prompts': hot_prompts,
     }
 
 def links(request):
