@@ -49,3 +49,15 @@ def load_more_posts(request):
         })
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+def hot_prompts(request, slug):
+    try:
+        prompt = Prompt.objects.get(slug=slug)
+        
+        return render(request, 'hot_prompts.html', {"prompt": prompt})
+    
+    except Exception as e:
+        print(f"\n\n\nsomething happened... - {e}\n\n\n")
+        return JsonResponse({"error": "Prompt not found"}, status=404)
+

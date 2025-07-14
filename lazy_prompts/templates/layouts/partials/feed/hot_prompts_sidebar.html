@@ -7,13 +7,15 @@
     <div class="hot-prompts-list">
         <!-- Placeholder for hot prompts -->
         {% for hot in hot_prompts %}
-        <div class="hot-prompt-card">
-            <h3 class="hot-prompt-title">{{ hot.title }}</h3>
-            <div class="hot-prompt-meta">
-                <span class="likes-count">{{ hot.annotated_likes_count }} likes</span>
-                <span class="topic-tag">{{ hot.topic.name }}</span>
+        <a href="{% url 'feed:hot' slug=hot.slug %}" target="_blank" rel="noopener noreferrer">
+            <div class="hot-prompt-card">
+                <h3 class="hot-prompt-title">{{ hot.title }}</h3>
+                <div class="hot-prompt-meta">
+                    <span class="likes-count">{{ hot.annotated_likes_count }} likes</span>
+                    <a class="topic-tag" href="{% url 'prompt_posts:topic_prompts' slug=hot.topic.slug %}">{{ hot.topic.name }}</a>
+                </div>
             </div>
-        </div>
+        </a>
         {% endfor %}
     </div>
 </aside>

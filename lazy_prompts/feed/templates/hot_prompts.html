@@ -1,0 +1,56 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load cloudinary %}
+{% block title %}Hot Prompt - {{ prompt.title }}{% endblock %}
+
+{% block content %}
+<article class="prompt-card">
+    <div class="prompt-card-header">
+        <div class="prompt-meta">
+            <a href="{% url 'users:profile' username=prompt.author.username %}" class="author-link">{{ prompt.author.username }}</a>
+            <span class="post-date">{{ prompt.created_at|timesince }}</span>
+            <a class="topic-tag" href="{% url 'prompt_posts:topic_prompts' slug=prompt.topic.slug %}">{{ prompt.topic.name }}</a>
+        </div>
+        <h2 class="prompt-title">{{ prompt.title }}</h2>
+    </div>
+    
+    <div class="prompt-content">
+
+        <div>
+            {% if prompt.description %}
+            <i class="prompt-description">{{ prompt.description }}</i>
+            {% endif %}
+        </div>
+        <div class="prompt-excerpt-container">
+            <p class="prompt-excerpt">"{{ prompt.content }}"</p>    
+            <button class="copy-button" onclick="copyPromptContent(this)" aria-label="Copy prompt content">
+                <svg class="copy-icon" width="20" height="20" viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+            </button>
+        </div>
+        {% if prompt.image %}
+        <div class="prompt-image">
+            <img loading="lazy" src="{% cloudinary_url prompt.image fetch_format='auto' quality='auto:low' width=600 crop='limit' %}" alt="{{ prompt.title }} image">
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="prompt-card-footer">
+        <div class="prompt-stats">
+            <button class="like-button" data-prompt-id="{{ prompt.id }}" data-is-liked="{{ request.user|yesno:'true,false' }}" aria-label="Like prompt">
+                <svg class="icon {% if user_auth and prompt.id in user_liked_prompt_ids %}liked{% endif %}" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <span class="likes-count-display">{{ prompt.likes_count|default:"0" }}</span>
+            </button>
+            <span class="saves-count">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+                </svg>
+                234
+            </span>
+        </div>
+    </div>
+</article>
+{% endblock %}
