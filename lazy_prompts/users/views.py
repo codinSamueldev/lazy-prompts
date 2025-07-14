@@ -75,6 +75,7 @@ def profile(request, username):
     try:
         user_profile = User.objects.get(username=username)
         return render(request, "profile.html", {"user_profile": user_profile})
-    except:
+    except Exception as e:
+        print(f"\n\n\n Something happened... - {e} \n\n\n")
         return JsonResponse({"error": f"{username} not found!"}, status=404)
 

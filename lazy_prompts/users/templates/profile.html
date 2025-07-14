@@ -1,8 +1,36 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
+{% load cloudinary %}
 
-{% block title %}{{ user_profile.username }}'s Profile{% endblock %}
+{% block title %}{{ user.username }}'s Profile{% endblock %}
 
 {% block content %}
-<h1>{{ user_profile.username }}'s Profile</h1>
-<p>Welcome to your profile page!</p>
+<div class="profile-header" style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+    <div class="profile-avatar" style="width: 96px; height: 96px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+        <!-- Placeholder avatar icon (SVG) -->
+        <svg width="48" height="48" fill="#bbb" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"/></svg>
+    </div>
+    <div>
+        <h1 style="margin: 0;">{{ user.username }}</h1>
+        <p style="color: #555; margin: 0.5rem 0 0 0;">
+            Joined {{ user.date_joined|date:"F Y" }}
+        </p>
+    </div>
+</div>
+
+<h2 style="font-size: 1.5rem; margin-bottom: 1rem;">About</h2>
+<p style="margin-bottom: 2rem;">{{ user.bio|default:"This user hasn't set up a bio yet." }}</p>
+
+<h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Recent Activity</h2>
+<ul class="recent-activity" style="list-style: none; padding: 0; margin: 0;">
+    {% for activity in user.prompt_set.all %}
+    <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+        <span style="font-weight: bold;">{{ activity.timestamp|date:"M d, Y H:i" }}</span>
+        <span style="margin: 0 0.5rem;">•</span>
+        <span>{{ activity.description }}</span>
+    </li>
+    {% empty %}
+    <li style="padding: 0.5rem 0;">No recent activity to display.</li>
+    {% endfor %}
+</ul>
 {% endblock %}
