@@ -73,7 +73,7 @@ def user_logout(request):
 @login_required
 def profile(request, username):
     try:
-        user_profile = User.objects.get(username=username)
+        user_profile = User.objects.prefetch_related("prompt_set").get(username=username)
         return render(request, "profile.html", {"user_profile": user_profile})
     except Exception as e:
         print(f"\n\n\n Something happened... - {e} \n\n\n")
