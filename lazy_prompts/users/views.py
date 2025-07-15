@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 from .forms import UserRegistrationForm, UserLoginForm
 
@@ -72,10 +73,36 @@ def user_logout(request):
 
 @login_required
 def profile(request, username):
+    """
+    Display the user's profile with paginated prompts (3 per page).
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        username (str): The username of the profile to display.
+
+    Returns:
+        HttpResponse: Rendered profile page or JSON error if not found.
+
+    Raises:
+        User.DoesNotExist: If the user does not exist.
+    """
     try:
         user_profile = User.objects.prefetch_related("prompt_set").get(username=username)
-        return render(request, "profile.html", {"user_profile": user_profile})
-    except Exception as e:
-        print(f"\n\n\n Something happened... - {e} \n\n\n")
+        prompts = user_profile.prompt_set.all()
+        paginator = Paginator(prompts, 3)  # 3 posts per page
+
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        return render(
+            request,
+            "profile.html",
+            {"user_profile": user_profile, "page_obj": page_obj}
+        )
+    except User.DoesNotExist:
         return JsonResponse({"error": f"{username} not found!"}, status=404)
+    except Exception as e:
+        # Log the error properly in production
+        print(f"\n\n\n Something happened... - {e} \n\n\n")
+        return JsonResponse({"error": "An unexpected error occurred."}, status=500)
 

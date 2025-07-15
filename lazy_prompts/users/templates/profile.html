@@ -23,10 +23,37 @@
 
 <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Recent Activity</h2>
 <ul class="recent-activity" style="list-style: none; padding: 0; margin: 0;">
-    {% if user_profile.prompt_set.all %}
-        {% include 'layouts/partials/feed/posts.html' with prompts=user_profile.prompt_set.all %}
+    {% if page_obj.object_list %}
+        {% include 'layouts/partials/feed/posts.html' with prompts=page_obj.object_list %}
     {% else %}
         <li style="padding: 0.5rem 0;">No recent activity to display.</li>
     {% endif %}
 </ul>
+
+<!-- Pagination controls -->
+{% if page_obj.has_other_pages %}
+<nav aria-label="Page navigation" style="margin-top: 2rem;">
+    <ul class="pagination" style="display: flex; gap: 0.5rem; list-style: none; padding: 0;">
+        {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}" style="padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 4px;">Previous</a></li>
+        {% else %}
+            <li style="padding: 0.5rem 1rem; color: #aaa; border: 1px solid #eee; border-radius: 4px;">Previous</li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <li style="padding: 0.5rem 1rem; background: #eee; border-radius: 4px;">{{ num }}</li>
+            {% else %}
+                <li><a href="?page={{ num }}" style="padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 4px;">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}" style="padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 4px;">Next</a></li>
+        {% else %}
+            <li style="padding: 0.5rem 1rem; color: #aaa; border: 1px solid #eee; border-radius: 4px;">Next</li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
 {% endblock %}
