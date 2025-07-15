@@ -12,9 +12,11 @@
 {% block content %}
     <h1 class="topic-title">{{ topic.name }}</h1>
     <div class="topic-description">{{ topic.description }}</div>
-    {% if not prompts %}
+    {% if not page_obj.object_list %}
         <p>No prompts found for this topic.</p>
     {% else %}
-        {% include 'layouts/partials/feed/posts.html' %}
+        {% include 'layouts/partials/feed/posts.html' with prompts=page_obj.object_list %}
+
+        {% include 'layouts/partials/feed/pagination_partial.html' with page_obj=page_obj %}
     {% endif %}
 {% endblock %}
