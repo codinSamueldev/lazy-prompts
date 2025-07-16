@@ -61,3 +61,7 @@ def hot_prompts(request, slug):
         print(f"\n\n\nsomething happened... - {e}\n\n\n")
         return JsonResponse({"error": "Prompt not found"}, status=404)
 
+
+def about(request):
+    return render(request, 'about.html', {})
+
