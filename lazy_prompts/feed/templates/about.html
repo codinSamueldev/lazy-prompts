@@ -2,15 +2,492 @@
 
 {% block title %}About{% endblock %}
 
+{% block extra_css %}
+<style>
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Hero Section */
+    .hero {
+        padding: 120px 0 80px;
+        text-align: center;
+        color: white;
+        position: relative;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="white" opacity="0.1"/><circle cx="90" cy="20" r="1" fill="white" opacity="0.1"/><circle cx="30" cy="80" r="1" fill="white" opacity="0.1"/><circle cx="70" cy="70" r="1" fill="white" opacity="0.1"/></svg>');
+        animation: float 20s infinite linear;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+
+    .hero h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, #006A71, #f0f0f0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        animation: fadeInUp 1s ease-out 0.2s both;
+        color: #006A71;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Main Content */
+    .main-content {
+        background: white;
+        border-radius: 20px 20px 0 0;
+        margin-top: -40px;
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.1);
+    }
+
+    .content-wrapper {
+        padding: 80px 0;
+    }
+
+    /* Mission Section */
+    .mission-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        margin-bottom: 6rem;
+    }
+
+    .mission-content h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2d3748;
+        position: relative;
+    }
+
+    .mission-content h2::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 2px;
+    }
+
+    .mission-content p {
+        font-size: 1.1rem;
+        color: #4a5568;
+        margin-bottom: 1.5rem;
+    }
+
+    .mission-visual {
+        position: relative;
+        height: 400px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .mission-visual::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10 10h20v20H10zM70 10h20v20H70zM10 70h20v20H10zM70 70h20v20H70z" fill="white" opacity="0.1"/></svg>');
+        animation: pulse 3s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.1; }
+    }
+
+    .mission-icon {
+        font-size: 4rem;
+        color: white;
+        z-index: 1;
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-10px); }
+        60% { transform: translateY(-5px); }
+    }
+
+    /* Features Section */
+    .features-section {
+        margin-bottom: 6rem;
+    }
+
+    .features-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 3rem;
+        color: #2d3748;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .feature-card h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #2d3748;
+    }
+
+    .feature-card p {
+        color: #4a5568;
+        line-height: 1.6;
+    }
+
+    /* Stats Section */
+    .stats-section {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 20px;
+        padding: 4rem 2rem;
+        margin-bottom: 6rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="30" r="1.5" fill="white" opacity="0.1"/><circle cx="40" cy="70" r="2.5" fill="white" opacity="0.1"/><circle cx="60" cy="50" r="1" fill="white" opacity="0.1"/></svg>');
+        animation: float 15s infinite linear;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .stat-item {
+        color: white;
+        z-index: 1;
+        position: relative;
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    /* CTA Section */
+    .cta-section {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border-radius: 20px;
+        margin-bottom: 4rem;
+    }
+
+    .cta-section h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #2d3748;
+    }
+
+    .cta-section p {
+        font-size: 1.2rem;
+        color: #4a5568;
+        margin-bottom: 2rem;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: #667eea;
+        border: 2px solid #667eea;
+    }
+
+    .btn-secondary:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+
+        .mission-section {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .mission-visual {
+            height: 300px;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero h1 {
+            font-size: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+
+        .mission-content h2,
+        .features-title,
+        .cta-section h2 {
+            font-size: 2rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+        }
+    }
+
+</style>
+{% endblock %}
+
 {% block content %}
-<h1>About Lazy Prompts</h1>
-<p>
-    Lazy Prompts is a web application designed to help users discover and share prompts for AI language models. Whether you're looking for inspiration or want to contribute your own prompts, Lazy Prompts is here to help.
-</p>
-<p>
-    Our mission is to make it easy for everyone to find and use high-quality prompts, fostering creativity and productivity in the AI community.
-</p>
-<p>
-    Feel free to explore our collection of prompts, submit your own, and connect with other users!
-</p>
+<section class="hero">
+    <div class="container">
+        <h1>Lazy Prompts</h1>
+        <p class="hero-subtitle">The social platform where creativity meets efficiency</p>
+    </div>
+</section>
+
+<main class="main-content">
+    <div class="container">
+        <div class="content-wrapper">
+            <section class="mission-section">
+                <div class="mission-content">
+                    <h2>Our Mission</h2>
+                    <p>
+                        Lazy Prompts is more than just a repository—it's a thriving social media platform designed to revolutionize how people discover and share prompts for AI language models. We believe that great ideas shouldn't be recreated from scratch every time.
+                    </p>
+                    <p>
+                        Our mission is to create a collaborative ecosystem where creativity flows freely, productivity soars, and the AI community can build upon each other's innovations. No more reinventing the wheel—just pure, efficient creativity.
+                    </p>
+                </div>
+                <div class="mission-visual">
+                    <div class="mission-icon">🚀</div>
+                </div>
+            </section>
+
+            <section class="features-section">
+                <h2 class="features-title">Why Choose Lazy Prompts?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">💡</span>
+                        <h3>Discover & Share</h3>
+                        <p>Explore thousands of carefully curated prompts from our vibrant community. Share your own creations and get inspired by others' innovative approaches.</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">⚡</span>
+                        <h3>Boost Productivity</h3>
+                        <p>Skip the brainstorming phase and dive straight into execution. Our platform saves you time by providing ready-to-use, battle-tested prompts.</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🎯</span>
+                        <h3>Quality Assured</h3>
+                        <p>Every prompt is community-vetted and rated. Find exactly what you need with our smart categorization and search features.</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🤝</span>
+                        <h3>Connect & Collaborate</h3>
+                        <p>Join discussions, follow creators, and build meaningful connections with fellow AI enthusiasts and professionals.</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🎨</span>
+                        <h3>Foster Creativity</h3>
+                        <p>Transform the way you approach AI interactions. Our diverse prompt library spans every creative and professional domain.</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">📈</span>
+                        <h3>Continuous Growth</h3>
+                        <p>Stay ahead of the curve with trending prompts, new techniques, and evolving best practices in the AI community.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Active Users</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Shared Prompts</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Categories</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">99%</span>
+                        <span class="stat-label">Satisfaction Rate</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-section">
+                <h2>Ready to Get Started?</h2>
+                <p>Join thousands of creators who are already saving time and boosting their productivity with Lazy Prompts.</p>
+                <div class="cta-buttons">
+                    <a href="{% url 'feed:home' %}" class="btn btn-primary">Start Exploring</a>
+                    <a href="{% url 'users:my_login' %}" class="btn btn-secondary">Login to Submit Your Prompt</a>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
 {% endblock %}
