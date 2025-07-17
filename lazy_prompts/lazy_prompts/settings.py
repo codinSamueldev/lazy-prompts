@@ -30,9 +30,9 @@ load_dotenv()
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.pythonanywhere.com', 'lazyprompts.pythonanywhere.com']
 
 
 # Application definition
@@ -275,3 +275,13 @@ cloudinary.config(
     api_secret = config('CLOUDINARY_API_SECRET', cast=str),
     secure = True
 )
+
+
+# Security (Deployment)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_SECONDS = 300
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
