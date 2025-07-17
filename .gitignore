@@ -339,9 +339,6 @@ poetry.toml
 # instructions
 .github/
 
-# Secret Admin URL
-lazy_prompts/lazy_prompts/urls.py
-
 # ruff
 .ruff_cache/
 
