@@ -8,7 +8,7 @@ class PromptCreateForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Enter your prompt title'}),
             'description': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Enter a brief description...'}),
-            'content': forms.Textarea(attrs={'class': 'form-textarea', 'placeholder': 'Paste your prompt content here...'}),
+            'content': forms.Textarea(attrs={'class': 'form-textarea', 'placeholder': 'Paste your prompt content here...', 'style': 'height: 15px;'}),
             'topic': forms.Select(attrs={'class': 'form-select'}),
             'image': forms.FileInput(attrs={'class': 'form-file-input'})
         }
